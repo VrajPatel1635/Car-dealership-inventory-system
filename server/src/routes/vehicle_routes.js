@@ -1,0 +1,9 @@
+const express = require('express');
+const vehicleController = require('../controllers/vehicle_controller');
+const verifyToken = require('../middleware/auth_middleware');
+
+const router = express.Router();
+
+router.post('/', verifyToken, vehicleController.createVehicle);
+
+module.exports = router;
