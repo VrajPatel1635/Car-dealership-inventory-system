@@ -112,4 +112,49 @@ describe('Auth Endpoints', () => {
       expect(response.body).toHaveProperty('error');
     });
   });
+
+  describe('Admin Authorization', () => {
+    it('should reject requests from non-admin users', async () => {
+      // Register and login a normal user
+      await request(app).post('/api/auth/register').send({
+        name: 'Normal Auth User', email: 'normal_auth@example.com', password: 'password123'
+      });
+      const loginRes = await request(app).post('/api/auth/login').send({
+        email: 'normal_auth@example.com', password: 'password123'
+      });
+      const normalToken = loginRes.body.token;
+
+      const response = await request(app)
+        .get('/api/auth/admin-only')
+        .set('Authorization', `Bearer ${normalToken}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body).toHaveProperty('error');
+    });
+
+    it('should allow requests from admin users', async () => {
+      // Manually create an admin user for testing
+      const bcrypt = require('bcrypt');
+      const User = require('../models/User');
+      const hashedPassword = await bcrypt.hash('adminpass', 10);
+      await User.create({
+        name: 'Admin User',
+        email: 'admin_auth@example.com',
+        password: hashedPassword,
+        role: 'ADMIN'
+      });
+
+      const loginRes = await request(app).post('/api/auth/login').send({
+        email: 'admin_auth@example.com', password: 'adminpass'
+      });
+      const adminToken = loginRes.body.token;
+
+      const response = await request(app)
+        .get('/api/auth/admin-only')
+        .set('Authorization', `Bearer ${adminToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('message', 'Welcome Admin');
+    });
+  });
 });
