@@ -162,4 +162,46 @@ describe('Vehicle Endpoints', () => {
       expect(response.body[0].model).toBe('Civic');
     });
   });
+
+  describe('POST /api/vehicles/:id/purchase', () => {
+    it('should successfully purchase a vehicle and reduce stock', async () => {
+      const Vehicle = require('../models/Vehicle');
+      const vehicle = await Vehicle.create({
+        make: 'Ford', model: 'Mustang', year: 2023, price: 30000, mileage: 0,
+        fuelType: 'Gasoline', transmission: 'Manual', color: 'Red', stock: 2
+      });
+
+      const response = await request(app)
+        .post(`/api/vehicles/${vehicle._id}/purchase`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.stock).toBe(1);
+    });
+
+    it('should prevent purchase if vehicle is out of stock', async () => {
+      const Vehicle = require('../models/Vehicle');
+      const vehicle = await Vehicle.create({
+        make: 'Tesla', model: 'Model 3', year: 2023, price: 40000, mileage: 0,
+        fuelType: 'Electric', transmission: 'Automatic', color: 'White', stock: 0
+      });
+
+      const response = await request(app)
+        .post(`/api/vehicles/${vehicle._id}/purchase`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty('error');
+    });
+
+    it('should return 404 if vehicle does not exist', async () => {
+      const fakeId = new (require('mongoose')).Types.ObjectId();
+      const response = await request(app)
+        .post(`/api/vehicles/${fakeId}/purchase`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body).toHaveProperty('error');
+    });
+  });
 });

@@ -33,6 +33,20 @@ exports.searchVehicles = async (query) => {
     return await Vehicle.find(filter);
 };
 
+exports.purchaseVehicle = async (id) => {
+    const vehicle = await Vehicle.findById(id);
+    if (!vehicle) {
+        throw new Error('Vehicle not found');
+    }
+    if (vehicle.stock <= 0) {
+        throw new Error('Out of stock');
+    }
+    
+    vehicle.stock -= 1;
+    await vehicle.save();
+    return vehicle;
+};
+
 exports.createVehicle = async (vehicleData) => {
     const vehicle = new Vehicle(vehicleData);
     await vehicle.save();
