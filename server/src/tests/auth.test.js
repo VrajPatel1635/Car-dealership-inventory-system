@@ -88,5 +88,28 @@ describe('Auth Endpoints', () => {
       expect(response.status).toBe(401);
       expect(response.body).toHaveProperty('error');
     });
+
+    it('should return a JWT token upon successful login', async () => {
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+          email: 'login@example.com',
+          password: 'securepassword123'
+        });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('token');
+    });
+  });
+
+  describe('Protected Routes (JWT Verification)', () => {
+    it('should reject requests without a valid JWT token', async () => {
+      const response = await request(app)
+        .get('/api/auth/profile') // Hypothetical protected endpoint
+        .set('Authorization', 'Bearer invalid_or_missing_token');
+
+      expect(response.status).toBe(401);
+      expect(response.body).toHaveProperty('error');
+    });
   });
 });
