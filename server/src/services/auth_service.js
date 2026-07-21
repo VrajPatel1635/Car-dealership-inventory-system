@@ -23,5 +23,9 @@ exports.loginUser = async (email, password) => {
         throw new Error('Invalid credentials');
     }
     
-    return user;
+    const jwt = require('jsonwebtoken');
+    const secret = process.env.JWT_SECRET || 'testsecret';
+    const token = jwt.sign({ id: user._id, role: user.role }, secret, { expiresIn: '1h' });
+    
+    return token;
 };
