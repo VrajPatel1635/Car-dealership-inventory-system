@@ -51,4 +51,40 @@ describe('Vehicle Endpoints', () => {
       expect(response.body).toHaveProperty('_id');
     });
   });
+
+  describe('GET /api/vehicles', () => {
+    it('should return an empty array if no vehicles exist', async () => {
+      // Clear the vehicles collection first to ensure it's empty
+      const Vehicle = require('../models/Vehicle');
+      await Vehicle.deleteMany({});
+
+      const response = await request(app).get('/api/vehicles');
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual([]);
+    });
+
+    it('should return all vehicles from the database when records exist', async () => {
+      const vehicleData = {
+        make: 'Honda',
+        model: 'Civic',
+        year: 2022,
+        price: 22000,
+        mileage: 20000,
+        fuelType: 'Gasoline',
+        transmission: 'Automatic',
+        color: 'Blue',
+        stock: 3
+      };
+
+      await request(app)
+        .post('/api/vehicles')
+        .set('Authorization', `Bearer ${token}`)
+        .send(vehicleData);
+
+      const response = await request(app).get('/api/vehicles');
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body[0]).toHaveProperty('make', 'Honda');
+    });
+  });
 });
