@@ -4,6 +4,13 @@ exports.getAllVehicles = async () => {
     return await Vehicle.find({});
 };
 
+/**
+ * Dynamically builds a MongoDB query to filter vehicles based on exact matches,
+ * numeric price ranges, and a unified keyword search across multiple text fields.
+ * 
+ * @param {Object} query - The query parameters from the request.
+ * @returns {Promise<Array>} List of matching Vehicle documents.
+ */
 exports.searchVehicles = async (query) => {
     const filter = {};
     if (query.make) filter.make = query.make;
@@ -33,6 +40,13 @@ exports.searchVehicles = async (query) => {
     return await Vehicle.find(filter);
 };
 
+/**
+ * Processes a vehicle purchase by verifying inventory and decrementing stock.
+ * Throws an error if the vehicle does not exist or is out of stock.
+ * 
+ * @param {String} id - The MongoDB ObjectId of the vehicle.
+ * @returns {Promise<Object>} The updated Vehicle document.
+ */
 exports.purchaseVehicle = async (id) => {
     const vehicle = await Vehicle.findById(id);
     if (!vehicle) {

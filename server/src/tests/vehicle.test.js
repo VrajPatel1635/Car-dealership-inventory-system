@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../app');
+const Vehicle = require('../models/Vehicle');
 
 describe('Vehicle Endpoints', () => {
   let token;
@@ -111,7 +112,6 @@ describe('Vehicle Endpoints', () => {
     });
 
     it('should return matching vehicles when filters are provided', async () => {
-      const Vehicle = require('../models/Vehicle');
       await Vehicle.deleteMany({});
       
       const vehicle1 = {
@@ -140,7 +140,6 @@ describe('Vehicle Endpoints', () => {
     });
 
     it('should return matching vehicles when a unified query string is provided', async () => {
-      const Vehicle = require('../models/Vehicle');
       await Vehicle.deleteMany({});
       
       const vehicle1 = {
@@ -180,7 +179,6 @@ describe('Vehicle Endpoints', () => {
 
   describe('POST /api/vehicles/:id/purchase', () => {
     it('should successfully purchase a vehicle and reduce stock', async () => {
-      const Vehicle = require('../models/Vehicle');
       const vehicle = await Vehicle.create({
         make: 'Ford', model: 'Mustang', year: 2023, price: 30000, mileage: 0,
         fuelType: 'Gasoline', transmission: 'Manual', color: 'Red', stock: 2
@@ -195,7 +193,6 @@ describe('Vehicle Endpoints', () => {
     });
 
     it('should prevent purchase if vehicle is out of stock', async () => {
-      const Vehicle = require('../models/Vehicle');
       const vehicle = await Vehicle.create({
         make: 'Tesla', model: 'Model 3', year: 2023, price: 40000, mileage: 0,
         fuelType: 'Electric', transmission: 'Automatic', color: 'White', stock: 0
@@ -223,7 +220,6 @@ describe('Vehicle Endpoints', () => {
   describe('Admin Vehicle Management', () => {
     let testVehicleId;
     beforeEach(async () => {
-      const Vehicle = require('../models/Vehicle');
       const vehicle = await Vehicle.create({
         make: 'AdminMake', model: 'AdminModel', year: 2024, price: 50000, mileage: 0,
         fuelType: 'Electric', transmission: 'Automatic', color: 'Black', stock: 5
