@@ -52,3 +52,29 @@ exports.createVehicle = async (vehicleData) => {
     await vehicle.save();
     return vehicle;
 };
+
+exports.updateVehicle = async (id, updateData) => {
+    const vehicle = await Vehicle.findByIdAndUpdate(id, updateData, { returnDocument: 'after' });
+    if (!vehicle) {
+        throw new Error('Vehicle not found');
+    }
+    return vehicle;
+};
+
+exports.restockVehicle = async (id, quantity) => {
+    const vehicle = await Vehicle.findById(id);
+    if (!vehicle) {
+        throw new Error('Vehicle not found');
+    }
+    vehicle.stock += (quantity || 1);
+    await vehicle.save();
+    return vehicle;
+};
+
+exports.deleteVehicle = async (id) => {
+    const vehicle = await Vehicle.findByIdAndDelete(id);
+    if (!vehicle) {
+        throw new Error('Vehicle not found');
+    }
+    return vehicle;
+};

@@ -3,6 +3,7 @@ const app = require('../app');
 
 describe('Vehicle Endpoints', () => {
   let token;
+  let adminToken;
 
   beforeAll(async () => {
     // Register a user
@@ -23,6 +24,20 @@ describe('Vehicle Endpoints', () => {
       });
 
     token = loginResponse.body.token;
+
+    const bcrypt = require('bcrypt');
+    const User = require('../models/User');
+    const hashedPassword = await bcrypt.hash('adminpass', 10);
+    await User.create({
+      name: 'Admin User',
+      email: 'admin_vehicle@example.com',
+      password: hashedPassword,
+      role: 'ADMIN'
+    });
+    const adminLoginRes = await request(app).post('/api/auth/login').send({
+      email: 'admin_vehicle@example.com', password: 'adminpass'
+    });
+    adminToken = adminLoginRes.body.token;
   });
 
   describe('POST /api/vehicles', () => {
@@ -202,6 +217,75 @@ describe('Vehicle Endpoints', () => {
 
       expect(response.status).toBe(404);
       expect(response.body).toHaveProperty('error');
+    });
+  });
+
+  describe('Admin Vehicle Management', () => {
+    let testVehicleId;
+    beforeEach(async () => {
+      const Vehicle = require('../models/Vehicle');
+      const vehicle = await Vehicle.create({
+        make: 'AdminMake', model: 'AdminModel', year: 2024, price: 50000, mileage: 0,
+        fuelType: 'Electric', transmission: 'Automatic', color: 'Black', stock: 5
+      });
+      testVehicleId = vehicle._id.toString();
+    });
+
+    describe('PUT /api/vehicles/:id', () => {
+      it('should return 403 for non-admin user', async () => {
+        const response = await request(app).put(`/api/vehicles/${testVehicleId}`).set('Authorization', `Bearer ${token}`).send({ price: 45000 });
+        expect(response.status).toBe(403);
+      });
+
+      it('should return 200 and updated vehicle for admin user', async () => {
+        const response = await request(app).put(`/api/vehicles/${testVehicleId}`).set('Authorization', `Bearer ${adminToken}`).send({ price: 45000 });
+        expect(response.status).toBe(200);
+        expect(response.body.price).toBe(45000);
+      });
+
+      it('should return 404 if vehicle does not exist', async () => {
+        const fakeId = new (require('mongoose')).Types.ObjectId();
+        const response = await request(app).put(`/api/vehicles/${fakeId}`).set('Authorization', `Bearer ${adminToken}`).send({ price: 45000 });
+        expect(response.status).toBe(404);
+      });
+    });
+
+    describe('POST /api/vehicles/:id/restock', () => {
+      it('should return 403 for non-admin user', async () => {
+        const response = await request(app).post(`/api/vehicles/${testVehicleId}/restock`).set('Authorization', `Bearer ${token}`).send({ quantity: 5 });
+        expect(response.status).toBe(403);
+      });
+
+      it('should return 200 and updated vehicle for admin user', async () => {
+        const response = await request(app).post(`/api/vehicles/${testVehicleId}/restock`).set('Authorization', `Bearer ${adminToken}`).send({ quantity: 5 });
+        expect(response.status).toBe(200);
+        expect(response.body.stock).toBe(10); // 5 + 5
+      });
+
+      it('should return 404 if vehicle does not exist', async () => {
+        const fakeId = new (require('mongoose')).Types.ObjectId();
+        const response = await request(app).post(`/api/vehicles/${fakeId}/restock`).set('Authorization', `Bearer ${adminToken}`).send({ quantity: 5 });
+        expect(response.status).toBe(404);
+      });
+    });
+
+    describe('DELETE /api/vehicles/:id', () => {
+      it('should return 403 for non-admin user', async () => {
+        const response = await request(app).delete(`/api/vehicles/${testVehicleId}`).set('Authorization', `Bearer ${token}`);
+        expect(response.status).toBe(403);
+      });
+
+      it('should return 200 and delete vehicle for admin user', async () => {
+        const response = await request(app).delete(`/api/vehicles/${testVehicleId}`).set('Authorization', `Bearer ${adminToken}`);
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe('Vehicle deleted successfully');
+      });
+
+      it('should return 404 if vehicle does not exist', async () => {
+        const fakeId = new (require('mongoose')).Types.ObjectId();
+        const response = await request(app).delete(`/api/vehicles/${fakeId}`).set('Authorization', `Bearer ${adminToken}`);
+        expect(response.status).toBe(404);
+      });
     });
   });
 });
