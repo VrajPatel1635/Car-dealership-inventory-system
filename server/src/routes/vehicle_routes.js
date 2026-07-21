@@ -4,6 +4,7 @@ const verifyToken = require('../middleware/auth_middleware');
 
 const router = express.Router();
 
+router.get('/search', vehicleController.searchVehicles);
 router.get('/', vehicleController.getVehicles);
 router.post('/', verifyToken, vehicleController.createVehicle);
 

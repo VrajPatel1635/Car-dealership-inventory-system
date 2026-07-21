@@ -9,6 +9,15 @@ exports.getVehicles = async (req, res) => {
     }
 };
 
+exports.searchVehicles = async (req, res) => {
+    try {
+        const vehicles = await vehicleService.searchVehicles(req.query);
+        res.status(200).json(vehicles);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 exports.createVehicle = async (req, res) => {
     try {
         const vehicle = await vehicleService.createVehicle(req.body);
