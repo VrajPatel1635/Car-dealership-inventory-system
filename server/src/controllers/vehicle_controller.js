@@ -1,5 +1,15 @@
 const vehicleService = require('../services/vehicle_service');
 
+const handleVehicleError = (res, error) => {
+    if (error.message === 'Vehicle not found') {
+        return res.status(404).json({ error: error.message });
+    }
+    if (error.message === 'Out of stock') {
+        return res.status(400).json({ error: error.message });
+    }
+    res.status(500).json({ error: error.message });
+};
+
 exports.getVehicles = async (req, res) => {
     try {
         const vehicles = await vehicleService.getAllVehicles();
@@ -23,13 +33,7 @@ exports.purchaseVehicle = async (req, res) => {
         const vehicle = await vehicleService.purchaseVehicle(req.params.id);
         res.status(200).json(vehicle);
     } catch (error) {
-        if (error.message === 'Vehicle not found') {
-            return res.status(404).json({ error: error.message });
-        }
-        if (error.message === 'Out of stock') {
-            return res.status(400).json({ error: error.message });
-        }
-        res.status(500).json({ error: error.message });
+        handleVehicleError(res, error);
     }
 };
 
@@ -47,10 +51,7 @@ exports.updateVehicle = async (req, res) => {
         const vehicle = await vehicleService.updateVehicle(req.params.id, req.body);
         res.status(200).json(vehicle);
     } catch (error) {
-        if (error.message === 'Vehicle not found') {
-            return res.status(404).json({ error: error.message });
-        }
-        res.status(500).json({ error: error.message });
+        handleVehicleError(res, error);
     }
 };
 
@@ -59,10 +60,7 @@ exports.restockVehicle = async (req, res) => {
         const vehicle = await vehicleService.restockVehicle(req.params.id, req.body.quantity);
         res.status(200).json(vehicle);
     } catch (error) {
-        if (error.message === 'Vehicle not found') {
-            return res.status(404).json({ error: error.message });
-        }
-        res.status(500).json({ error: error.message });
+        handleVehicleError(res, error);
     }
 };
 
@@ -71,9 +69,6 @@ exports.deleteVehicle = async (req, res) => {
         await vehicleService.deleteVehicle(req.params.id);
         res.status(200).json({ message: 'Vehicle deleted successfully' });
     } catch (error) {
-        if (error.message === 'Vehicle not found') {
-            return res.status(404).json({ error: error.message });
-        }
-        res.status(500).json({ error: error.message });
+        handleVehicleError(res, error);
     }
 };
