@@ -40,4 +40,53 @@ describe('Auth Endpoints', () => {
       expect(response.body).toHaveProperty('error');
     });
   });
+
+  describe('POST /api/auth/login', () => {
+    beforeEach(async () => {
+      await request(app)
+        .post('/api/auth/register')
+        .send({
+          name: 'Login User',
+          email: 'login@example.com',
+          password: 'securepassword123'
+        });
+    });
+
+    it('should login successfully with valid credentials', async () => {
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+          email: 'login@example.com',
+          password: 'securepassword123'
+        });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('message', 'Login successful');
+      expect(response.body).not.toHaveProperty('password');
+    });
+
+    it('should fail with invalid email', async () => {
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+          email: 'wrong@example.com',
+          password: 'securepassword123'
+        });
+
+      expect(response.status).toBe(401);
+      expect(response.body).toHaveProperty('error');
+    });
+
+    it('should fail with invalid password', async () => {
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+          email: 'login@example.com',
+          password: 'wrongpassword'
+        });
+
+      expect(response.status).toBe(401);
+      expect(response.body).toHaveProperty('error');
+    });
+  });
 });
