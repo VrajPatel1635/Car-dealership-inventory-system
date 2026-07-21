@@ -3,7 +3,8 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "seed:admin": "node scripts/seed_admin.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
