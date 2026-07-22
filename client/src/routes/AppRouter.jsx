@@ -1,8 +1,7 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { MainLayout, AuthLayout, AdminLayout } from "../layouts";
 import {
-  Home,
   Login,
   Register,
   Inventory,
@@ -17,13 +16,8 @@ const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Routes with MainLayout */}
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/inventory" element={<Inventory />} />
-          <Route path="/vehicles/:id" element={<VehicleDetails />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
+        {/* Redirect Root to Login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
         {/* Auth Routes with AuthLayout */}
         <Route element={<AuthLayout />}>
@@ -31,11 +25,24 @@ const AppRouter = () => {
           <Route path="/register" element={<Register />} />
         </Route>
 
+        {/* Protected Routes with MainLayout */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<MainLayout />}>
+            <Route path="/inventory" element={<Inventory />} />
+            <Route path="/vehicles/:id" element={<VehicleDetails />} />
+          </Route>
+        </Route>
+
         {/* Admin Routes with AdminLayout */}
-        <Route element={<AdminLayout />}>
-          <Route element={<AdminRoute />}>
+        <Route element={<AdminRoute />}>
+          <Route element={<AdminLayout />}>
             <Route path="/admin" element={<AdminDashboard />} />
           </Route>
+        </Route>
+
+        {/* Catch-all Route */}
+        <Route element={<MainLayout />}>
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
