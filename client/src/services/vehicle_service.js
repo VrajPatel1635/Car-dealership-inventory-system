@@ -17,4 +17,8 @@ export const vehicleService = {
     const response = await api.delete(`/vehicles/${id}`);
     return response.data;
   },
+  purchaseVehicle: async (id) => {
+    const response = await api.post(`/vehicles/${id}/purchase`);
+    return response.data;
+  },
 };

@@ -1,7 +1,7 @@
 import React from "react";
-import { Badge } from "../ui";
+import { Badge, Button } from "../ui";
 
-const VehicleCard = ({ vehicle }) => {
+const VehicleCard = ({ vehicle, onPurchaseClick }) => {
   const {
     make,
     model,
@@ -52,7 +52,7 @@ const VehicleCard = ({ vehicle }) => {
         </div>
 
         <div className="mt-auto">
-          <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-body-sm-size">
+          <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-body-sm-size mb-6">
             <div>
               <dt className="text-muted text-xs uppercase tracking-wider font-semibold mb-1">
                 Mileage
@@ -80,6 +80,14 @@ const VehicleCard = ({ vehicle }) => {
               <dd className="font-medium text-foreground">{color}</dd>
             </div>
           </dl>
+          <Button
+            variant="primary"
+            className="w-full"
+            disabled={isOutOfStock}
+            onClick={() => onPurchaseClick && onPurchaseClick(vehicle)}
+          >
+            {isOutOfStock ? "Out of Stock" : "Purchase"}
+          </Button>
         </div>
       </div>
     </div>
