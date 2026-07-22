@@ -1,7 +1,8 @@
 import React from "react";
 import { ThemeToggle } from "../components/layout";
+import { Outlet } from "react-router-dom";
 
-const AdminLayout = ({ children }) => {
+const AdminLayout = () => {
   return (
     <div className="page bg-background-secondary">
       <header className="sticky top-0 z-sticky w-full border-b border-border bg-surface px-6 py-3 flex items-center justify-between">
@@ -25,7 +26,9 @@ const AdminLayout = ({ children }) => {
             </div>
           </nav>
         </aside>
-        <main className="flex-1 p-6">{children}</main>
+        <main className="flex-1 p-6">
+          <Outlet />
+        </main>
       </div>
     </div>
   );
