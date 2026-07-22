@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Input, Button } from "../ui";
+import { Input, Button, Select } from "../ui";
 
 const vehicleSchema = z.object({
   make: z.string().min(1, "Make is required"),
@@ -16,6 +16,7 @@ const vehicleSchema = z.object({
   fuelType: z.string().min(1, "Fuel type is required"),
   transmission: z.string().min(1, "Transmission is required"),
   color: z.string().min(1, "Color is required"),
+  category: z.string().min(1, "Category is required"),
   stock: z.coerce.number().min(0, "Stock cannot be negative"),
 });
 
@@ -35,6 +36,7 @@ const VehicleForm = ({ defaultValues, onSubmit, isLoading, onCancel }) => {
       fuelType: "",
       transmission: "",
       color: "",
+      category: "",
       stock: 1,
     },
   });
@@ -97,6 +99,24 @@ const VehicleForm = ({ defaultValues, onSubmit, isLoading, onCancel }) => {
           error={!!errors.color}
           helperText={errors.color?.message}
           {...register("color")}
+        />
+        <Select
+          label="Category"
+          error={!!errors.category}
+          helperText={errors.category?.message}
+          options={[
+            { value: "", label: "Select a category" },
+            { value: "Sedan", label: "Sedan" },
+            { value: "SUV", label: "SUV" },
+            { value: "Hatchback", label: "Hatchback" },
+            { value: "Coupe", label: "Coupe" },
+            { value: "Convertible", label: "Convertible" },
+            { value: "Wagon", label: "Wagon" },
+            { value: "Pickup Truck", label: "Pickup Truck" },
+            { value: "Van", label: "Van" },
+            { value: "Minivan", label: "Minivan" },
+          ]}
+          {...register("category")}
         />
         <Input
           label="Stock"

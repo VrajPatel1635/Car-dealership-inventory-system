@@ -17,13 +17,14 @@ exports.searchVehicles = async (query) => {
     if (query.model) filter.model = query.model;
     if (query.fuelType) filter.fuelType = query.fuelType;
     if (query.transmission) filter.transmission = query.transmission;
-    
+    if (query.category) filter.category = query.category;
+
     if (query.minPrice || query.maxPrice) {
         filter.price = {};
         if (query.minPrice) filter.price.$gte = Number(query.minPrice);
         if (query.maxPrice) filter.price.$lte = Number(query.maxPrice);
     }
-    
+
     if (query.query) {
         const words = query.query.trim().split(/\s+/);
         if (words.length > 0) {
@@ -31,12 +32,13 @@ exports.searchVehicles = async (query) => {
                 $or: [
                     { make: new RegExp(word, 'i') },
                     { model: new RegExp(word, 'i') },
-                    { color: new RegExp(word, 'i') }
+                    { color: new RegExp(word, 'i') },
+                    { category: new RegExp(word, 'i') }
                 ]
             }));
         }
     }
-    
+
     return await Vehicle.find(filter);
 };
 
@@ -55,7 +57,7 @@ exports.purchaseVehicle = async (id) => {
     if (vehicle.stock <= 0) {
         throw new Error('Out of stock');
     }
-    
+
     vehicle.stock -= 1;
     await vehicle.save();
     return vehicle;

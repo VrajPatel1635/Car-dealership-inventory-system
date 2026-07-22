@@ -5,12 +5,14 @@ export const useVehicleFilters = (vehicles = []) => {
   const [selectedStock, setSelectedStock] = useState("All");
   const [selectedFuelType, setSelectedFuelType] = useState("All");
   const [selectedTransmission, setSelectedTransmission] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const updateSearchQuery = (query) => setSearchQuery(query);
   const updateStockFilter = (stock) => setSelectedStock(stock);
   const updateFuelTypeFilter = (fuelType) => setSelectedFuelType(fuelType);
   const updateTransmissionFilter = (transmission) =>
     setSelectedTransmission(transmission);
+  const updateCategoryFilter = (category) => setSelectedCategory(category);
 
   const fuelTypeOptions = useMemo(() => {
     const types = new Set(vehicles.map((v) => v.fuelType).filter(Boolean));
@@ -19,6 +21,11 @@ export const useVehicleFilters = (vehicles = []) => {
 
   const transmissionOptions = useMemo(() => {
     const types = new Set(vehicles.map((v) => v.transmission).filter(Boolean));
+    return ["All", ...Array.from(types).sort()];
+  }, [vehicles]);
+
+  const categoryOptions = useMemo(() => {
+    const types = new Set(vehicles.map((v) => v.category).filter(Boolean));
     return ["All", ...Array.from(types).sort()];
   }, [vehicles]);
 
@@ -48,8 +55,12 @@ export const useVehicleFilters = (vehicles = []) => {
         selectedTransmission === "All" ||
         vehicle.transmission === selectedTransmission;
 
+      // Category filter
+      const matchesCategory =
+        selectedCategory === "All" || vehicle.category === selectedCategory;
+
       return (
-        matchesSearch && matchesStock && matchesFuelType && matchesTransmission
+        matchesSearch && matchesStock && matchesFuelType && matchesTransmission && matchesCategory
       );
     });
   }, [
@@ -58,6 +69,7 @@ export const useVehicleFilters = (vehicles = []) => {
     selectedStock,
     selectedFuelType,
     selectedTransmission,
+    selectedCategory,
   ]);
 
   return {
@@ -66,11 +78,14 @@ export const useVehicleFilters = (vehicles = []) => {
     selectedStock,
     selectedFuelType,
     selectedTransmission,
+    selectedCategory,
     fuelTypeOptions,
     transmissionOptions,
+    categoryOptions,
     updateSearchQuery,
     updateStockFilter,
     updateFuelTypeFilter,
     updateTransmissionFilter,
+    updateCategoryFilter,
   };
 };

@@ -11,6 +11,7 @@ const VehicleCard = ({ vehicle, onPurchaseClick }) => {
     fuelType,
     transmission,
     color,
+    category,
     stock,
   } = vehicle;
 
@@ -78,6 +79,12 @@ const VehicleCard = ({ vehicle, onPurchaseClick }) => {
                 Color
               </dt>
               <dd className="font-medium text-foreground">{color}</dd>
+            </div>
+            <div>
+              <dt className="text-muted text-xs uppercase tracking-wider font-semibold mb-1">
+                Category
+              </dt>
+              <dd className="font-medium text-foreground">{category}</dd>
             </div>
           </dl>
           <Button

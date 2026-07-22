@@ -18,12 +18,15 @@ const Inventory = () => {
     selectedStock,
     selectedFuelType,
     selectedTransmission,
+    selectedCategory,
     fuelTypeOptions,
     transmissionOptions,
+    categoryOptions,
     updateSearchQuery,
     updateStockFilter,
     updateFuelTypeFilter,
     updateTransmissionFilter,
+    updateCategoryFilter,
   } = useVehicleFilters(vehicles);
 
   const { purchaseVehicle, isPurchasing, purchaseError } = usePurchaseVehicle();
@@ -89,6 +92,9 @@ const Inventory = () => {
             selectedTransmission={selectedTransmission}
             onTransmissionChange={updateTransmissionFilter}
             transmissionOptions={transmissionOptions}
+            selectedCategory={selectedCategory}
+            onCategoryChange={updateCategoryFilter}
+            categoryOptions={categoryOptions}
           />
 
           {filteredVehicles.length === 0 ? (

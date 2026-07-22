@@ -13,6 +13,9 @@ const InventoryToolbar = ({
   selectedTransmission,
   onTransmissionChange,
   transmissionOptions,
+  selectedCategory,
+  onCategoryChange,
+  categoryOptions,
 }) => {
   return (
     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8 p-4 bg-surface border border-border rounded-lg">
@@ -29,6 +32,9 @@ const InventoryToolbar = ({
         selectedTransmission={selectedTransmission}
         onTransmissionChange={onTransmissionChange}
         transmissionOptions={transmissionOptions}
+        selectedCategory={selectedCategory}
+        onCategoryChange={onCategoryChange}
+        categoryOptions={categoryOptions}
       />
     </div>
   );

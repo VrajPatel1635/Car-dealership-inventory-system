@@ -10,9 +10,12 @@ const VehicleFilters = ({
   selectedTransmission,
   onTransmissionChange,
   transmissionOptions,
+  selectedCategory,
+  onCategoryChange,
+  categoryOptions,
 }) => {
   return (
-    <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+    <div className="flex flex-col sm:flex-row flex-wrap gap-4 w-full sm:w-auto">
       <div className="w-full sm:w-40">
         <Select
           value={selectedStock}
@@ -43,6 +46,17 @@ const VehicleFilters = ({
           options={transmissionOptions.map((option) => ({
             value: option,
             label: option === "All" ? "All Transmissions" : option,
+          }))}
+        />
+      </div>
+
+      <div className="w-full sm:w-40">
+        <Select
+          value={selectedCategory}
+          onChange={(e) => onCategoryChange(e.target.value)}
+          options={categoryOptions.map((option) => ({
+            value: option,
+            label: option === "All" ? "All Categories" : option,
           }))}
         />
       </div>

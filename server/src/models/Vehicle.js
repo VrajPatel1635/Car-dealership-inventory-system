@@ -9,6 +9,7 @@ const vehicleSchema = new mongoose.Schema({
     fuelType: { type: String, required: true },
     transmission: { type: String, required: true },
     color: { type: String, required: true },
+    category: { type: String, required: true },
     stock: { type: Number, required: true }
 });
 

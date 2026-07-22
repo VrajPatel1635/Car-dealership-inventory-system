@@ -52,6 +52,7 @@ describe('Vehicle Endpoints', () => {
         fuelType: 'Hybrid',
         transmission: 'Automatic',
         color: 'Silver',
+        category: 'Sedan',
         stock: 5
       };
 
@@ -89,6 +90,7 @@ describe('Vehicle Endpoints', () => {
         fuelType: 'Gasoline',
         transmission: 'Automatic',
         color: 'Blue',
+        category: 'Sedan',
         stock: 3
       };
 
@@ -113,14 +115,14 @@ describe('Vehicle Endpoints', () => {
 
     it('should return matching vehicles when filters are provided', async () => {
       await Vehicle.deleteMany({});
-      
+
       const vehicle1 = {
         make: 'Honda', model: 'Civic', year: 2022, price: 22000, mileage: 20000,
-        fuelType: 'Gasoline', transmission: 'Automatic', color: 'Blue', stock: 3
+        fuelType: 'Gasoline', transmission: 'Automatic', color: 'Blue', category: 'Sedan', stock: 3
       };
       const vehicle2 = {
         make: 'Toyota', model: 'Camry', year: 2023, price: 25000, mileage: 15000,
-        fuelType: 'Hybrid', transmission: 'Automatic', color: 'Silver', stock: 5
+        fuelType: 'Hybrid', transmission: 'Automatic', color: 'Silver', category: 'Sedan', stock: 5
       };
 
       await request(app).post('/api/vehicles').set('Authorization', `Bearer ${token}`).send(vehicle1);
@@ -141,18 +143,18 @@ describe('Vehicle Endpoints', () => {
 
     it('should return matching vehicles when a unified query string is provided', async () => {
       await Vehicle.deleteMany({});
-      
+
       const vehicle1 = {
         make: 'Honda', model: 'City', year: 2022, price: 22000, mileage: 20000,
-        fuelType: 'Gasoline', transmission: 'Automatic', color: 'Blue', stock: 3
+        fuelType: 'Gasoline', transmission: 'Automatic', color: 'Blue', category: 'Sedan', stock: 3
       };
       const vehicle2 = {
         make: 'Toyota', model: 'Fortuner', year: 2023, price: 45000, mileage: 15000,
-        fuelType: 'Diesel', transmission: 'Automatic', color: 'Black', stock: 5
+        fuelType: 'Diesel', transmission: 'Automatic', color: 'Black', category: 'SUV', stock: 5
       };
       const vehicle3 = {
         make: 'Honda', model: 'Civic', year: 2021, price: 20000, mileage: 30000,
-        fuelType: 'Gasoline', transmission: 'Automatic', color: 'Black', stock: 2
+        fuelType: 'Gasoline', transmission: 'Automatic', color: 'Black', category: 'Sedan', stock: 2
       };
 
       await request(app).post('/api/vehicles').set('Authorization', `Bearer ${token}`).send(vehicle1);
@@ -181,7 +183,7 @@ describe('Vehicle Endpoints', () => {
     it('should successfully purchase a vehicle and reduce stock', async () => {
       const vehicle = await Vehicle.create({
         make: 'Ford', model: 'Mustang', year: 2023, price: 30000, mileage: 0,
-        fuelType: 'Gasoline', transmission: 'Manual', color: 'Red', stock: 2
+        fuelType: 'Gasoline', transmission: 'Manual', color: 'Red', category: 'Coupe', stock: 2
       });
 
       const response = await request(app)
@@ -195,7 +197,7 @@ describe('Vehicle Endpoints', () => {
     it('should prevent purchase if vehicle is out of stock', async () => {
       const vehicle = await Vehicle.create({
         make: 'Tesla', model: 'Model 3', year: 2023, price: 40000, mileage: 0,
-        fuelType: 'Electric', transmission: 'Automatic', color: 'White', stock: 0
+        fuelType: 'Electric', transmission: 'Automatic', color: 'White', category: 'Sedan', stock: 0
       });
 
       const response = await request(app)
@@ -222,7 +224,7 @@ describe('Vehicle Endpoints', () => {
     beforeEach(async () => {
       const vehicle = await Vehicle.create({
         make: 'AdminMake', model: 'AdminModel', year: 2024, price: 50000, mileage: 0,
-        fuelType: 'Electric', transmission: 'Automatic', color: 'Black', stock: 5
+        fuelType: 'Electric', transmission: 'Automatic', color: 'Black', category: 'SUV', stock: 5
       });
       testVehicleId = vehicle._id.toString();
     });
