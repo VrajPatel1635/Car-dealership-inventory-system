@@ -50,16 +50,20 @@ exports.searchVehicles = async (query) => {
  * @returns {Promise<Object>} The updated Vehicle document.
  */
 exports.purchaseVehicle = async (id) => {
-    const vehicle = await Vehicle.findById(id);
+    const vehicle = await Vehicle.findOneAndUpdate(
+        { _id: id, stock: { $gt: 0 } },
+        { $inc: { stock: -1 } },
+        { new: true }
+    );
+
     if (!vehicle) {
-        throw new Error('Vehicle not found');
-    }
-    if (vehicle.stock <= 0) {
+        const exists = await Vehicle.findById(id);
+        if (!exists) {
+            throw new Error('Vehicle not found');
+        }
         throw new Error('Out of stock');
     }
 
-    vehicle.stock -= 1;
-    await vehicle.save();
     return vehicle;
 };
 
@@ -78,12 +82,16 @@ exports.updateVehicle = async (id, updateData) => {
 };
 
 exports.restockVehicle = async (id, quantity) => {
-    const vehicle = await Vehicle.findById(id);
+    const vehicle = await Vehicle.findByIdAndUpdate(
+        id,
+        { $inc: { stock: quantity || 1 } },
+        { new: true }
+    );
+
     if (!vehicle) {
         throw new Error('Vehicle not found');
     }
-    vehicle.stock += (quantity || 1);
-    await vehicle.save();
+
     return vehicle;
 };
 

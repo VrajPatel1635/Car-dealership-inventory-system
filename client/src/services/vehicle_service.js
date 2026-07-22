@@ -21,4 +21,8 @@ export const vehicleService = {
     const response = await api.post(`/vehicles/${id}/purchase`);
     return response.data;
   },
+  restockVehicle: async (id, quantity) => {
+    const response = await api.post(`/vehicles/${id}/restock`, { quantity });
+    return response.data;
+  },
 };

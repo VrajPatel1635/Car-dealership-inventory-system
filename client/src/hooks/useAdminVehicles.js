@@ -55,6 +55,22 @@ export const useAdminVehicles = () => {
     }
   };
 
+  const restockVehicle = async (id, quantity) => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      await vehicleService.restockVehicle(id, quantity);
+      await fetchVehicles();
+    } catch (err) {
+      setSubmitError(
+        err.response?.data?.error || err.message || "Failed to restock vehicle",
+      );
+      throw err;
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return {
     vehicles,
     isLoading,
@@ -63,6 +79,7 @@ export const useAdminVehicles = () => {
     createVehicle,
     updateVehicle,
     deleteVehicle,
+    restockVehicle,
     isSubmitting,
     submitError,
   };

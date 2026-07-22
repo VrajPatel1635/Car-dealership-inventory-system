@@ -1,8 +1,8 @@
 import React from "react";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2, PackagePlus } from "lucide-react";
 import { Button } from "../ui";
 
-const VehicleTable = ({ vehicles, onEdit, onDelete }) => {
+const VehicleTable = ({ vehicles, onEdit, onDelete, onRestock }) => {
   const formatPrice = (amount) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -49,6 +49,15 @@ const VehicleTable = ({ vehicles, onEdit, onDelete }) => {
               </td>
               <td className="px-6 py-4 text-right">
                 <div className="flex justify-end gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 text-muted hover:text-primary"
+                    onClick={() => onRestock(vehicle)}
+                    aria-label="Restock vehicle"
+                  >
+                    <PackagePlus size={16} />
+                  </Button>
                   <Button
                     variant="ghost"
                     size="sm"

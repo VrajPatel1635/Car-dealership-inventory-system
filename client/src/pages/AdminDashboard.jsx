@@ -6,6 +6,7 @@ import {
   VehicleForm,
   VehicleModal,
   DeleteVehicleDialog,
+  RestockDialog,
 } from "../components/admin";
 import { Button, Spinner, Alert, EmptyState } from "../components/ui";
 
@@ -18,6 +19,7 @@ const AdminDashboard = () => {
     createVehicle,
     updateVehicle,
     deleteVehicle,
+    restockVehicle,
     isSubmitting,
     submitError,
   } = useAdminVehicles();
@@ -25,6 +27,7 @@ const AdminDashboard = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingVehicle, setEditingVehicle] = useState(null);
   const [deletingVehicle, setDeletingVehicle] = useState(null);
+  const [restockingVehicle, setRestockingVehicle] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
@@ -63,6 +66,16 @@ const AdminDashboard = () => {
       showSuccess("Vehicle deleted successfully");
     } catch (err) {
       // Error is handled by hook and displayed in modal
+    }
+  };
+
+  const handleRestockSubmit = async (data) => {
+    try {
+      await restockVehicle(restockingVehicle._id, data.quantity);
+      setRestockingVehicle(null);
+      showSuccess("Vehicle restocked successfully");
+    } catch (err) {
+      // Error is handled by hook and displayed in dialog
     }
   };
 
@@ -109,6 +122,7 @@ const AdminDashboard = () => {
           vehicles={vehicles}
           onEdit={(vehicle) => setEditingVehicle(vehicle)}
           onDelete={(vehicle) => setDeletingVehicle(vehicle)}
+          onRestock={(vehicle) => setRestockingVehicle(vehicle)}
         />
       )}
 
@@ -158,6 +172,16 @@ const AdminDashboard = () => {
         onConfirm={handleDeleteConfirm}
         vehicle={deletingVehicle}
         isLoading={isSubmitting}
+      />
+
+      {/* Restock Dialog */}
+      <RestockDialog
+        isOpen={!!restockingVehicle}
+        onClose={() => !isSubmitting && setRestockingVehicle(null)}
+        onConfirm={handleRestockSubmit}
+        vehicle={restockingVehicle}
+        isLoading={isSubmitting}
+        error={submitError}
       />
     </div>
   );
