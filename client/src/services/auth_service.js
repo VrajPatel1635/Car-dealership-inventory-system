@@ -9,8 +9,4 @@ export const authService = {
     const response = await api.post("/auth/register", userData);
     return response.data;
   },
-  logout: async () => {
-    // Optional: Call backend logout endpoint if needed
-    // await api.post('/auth/logout');
-  },
 };

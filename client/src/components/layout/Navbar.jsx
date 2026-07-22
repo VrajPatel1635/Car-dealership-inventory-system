@@ -1,9 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Container from "./Container";
 import ThemeToggle from "./ThemeToggle";
 import { Button } from "../ui";
+import { useAuth } from "../../hooks/useAuth";
 
 const Navbar = () => {
+  const { isAuthenticated, logout } = useAuth();
   return (
     <header className="sticky top-0 z-sticky w-full border-b border-border-light bg-navbar-background backdrop-blur-md">
       <Container>
@@ -38,9 +41,17 @@ const Navbar = () => {
           </div>
           <div className="flex items-center gap-4">
             <ThemeToggle />
-            <Button variant="primary" size="sm">
-              Login
-            </Button>
+            {isAuthenticated ? (
+              <Button variant="outline" size="sm" onClick={logout}>
+                Logout
+              </Button>
+            ) : (
+              <Link to="/login">
+                <Button variant="primary" size="sm">
+                  Login
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </Container>

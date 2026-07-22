@@ -54,6 +54,7 @@ export const AuthProvider = ({ children }) => {
     authTokenService.removeToken();
     setUser(null);
     setIsAuthenticated(false);
+    window.location.href = "/login";
   };
 
   if (!isInitialized) {
