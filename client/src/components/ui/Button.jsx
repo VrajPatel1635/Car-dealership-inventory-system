@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "../../../utils/cn";
+import { cn } from "../../utils/cn";
 
 const Button = React.forwardRef(
   (
@@ -9,9 +9,6 @@ const Button = React.forwardRef(
       size = "md",
       loading = false,
       disabled = false,
-      fullWidth = false,
-      leftIcon,
-      rightIcon,
       children,
       ...props
     },
@@ -32,7 +29,6 @@ const Button = React.forwardRef(
             small: size === "sm",
             medium: size === "md",
             large: size === "lg",
-            "w-full": fullWidth,
             loading: loading,
           },
           className,
@@ -61,13 +57,7 @@ const Button = React.forwardRef(
             ></path>
           </svg>
         )}
-        {!loading && leftIcon && (
-          <span className="inline-flex shrink-0 mr-2">{leftIcon}</span>
-        )}
         <span className="truncate">{children}</span>
-        {!loading && rightIcon && (
-          <span className="inline-flex shrink-0 ml-2">{rightIcon}</span>
-        )}
       </button>
     );
   },
