@@ -1,0 +1,447 @@
+/* ==========================================================================
+   THEME SYSTEM FUNDAMENTALS
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     BASE COLOR PALETTE (LIGHT THEME)
+     ========================================================================== */
+  --base-bg-primary: #f6f4ef;
+  --base-bg-secondary: #eae7df;
+  --base-text-primary: #1a1c1a;
+  --base-accent-primary: #1e4030;
+  --base-accent-secondary: #5a1d26;
+
+  /* ==========================================================================
+     SEMANTIC COLOR TOKENS (LIGHT THEME)
+     ========================================================================== */
+  /* Background */
+  --background: var(--base-bg-primary);
+  --background-secondary: var(--base-bg-secondary);
+  --background-tertiary: #dfdbd0;
+
+  /* Surface */
+  --surface: #ffffff;
+  --surface-hover: #f9f8f6;
+  --surface-active: #f0eee9;
+
+  /* Text */
+  --foreground: var(--base-text-primary);
+  --foreground-secondary: #4a4d4a;
+  --foreground-muted: #737673;
+  --foreground-inverse: #ffffff;
+
+  /* Primary */
+  --primary: var(--base-accent-primary);
+  --primary-hover: #152e22;
+  --primary-active: #0d1c14;
+  --primary-foreground: #ffffff;
+
+  /* Secondary */
+  --secondary: var(--base-accent-secondary);
+  --secondary-hover: #42151c;
+  --secondary-active: #2b0e12;
+  --secondary-foreground: #ffffff;
+
+  /* Destructive */
+  --destructive: #d93838;
+  --destructive-hover: #b32d2d;
+  --destructive-foreground: #ffffff;
+
+  /* Status */
+  --success: #288054;
+  --warning: #d97706;
+  --error: #dc2626;
+  --info: #2563eb;
+
+  /* Borders */
+  --border: #d4d1c9;
+  --border-light: #e5e2da;
+  --border-strong: #a3a096;
+
+  /* Forms */
+  --input-background: var(--surface);
+  --input-border: var(--border);
+  --input-placeholder: var(--foreground-muted);
+  --input-focus: var(--primary);
+
+  /* Buttons */
+  --button-primary: var(--primary);
+  --button-secondary: var(--secondary);
+  --button-outline: transparent;
+  --button-danger: var(--destructive);
+
+  /* Cards */
+  --card-background: var(--surface);
+  --card-border: var(--border-light);
+
+  /* Navbar */
+  --navbar-background: rgba(246, 244, 239, 0.8);
+  --navbar-border: var(--border-light);
+
+  /* Sidebar */
+  --sidebar-background: var(--base-bg-secondary);
+  --sidebar-border: var(--border);
+
+  /* Overlay */
+  --overlay: rgba(26, 28, 26, 0.4);
+
+  /* Scrollbar */
+  --scrollbar-thumb: #c2bfb6;
+  --scrollbar-track: transparent;
+
+  /* Selection */
+  --selection-background: rgba(30, 64, 48, 0.2);
+  --selection-text: var(--primary);
+
+  /* Focus Ring */
+  --focus-ring: rgba(30, 64, 48, 0.4);
+
+  /* Browser Polish */
+  color-scheme: light;
+}
+
+.dark {
+  /* ==========================================================================
+     BASE COLOR PALETTE (DARK THEME)
+     ========================================================================== */
+  --base-bg-primary: #0d0f0e;
+  --base-bg-secondary: #161917;
+  --base-text-primary: #eceae4;
+  --base-accent-primary: #2e5943;
+  --base-accent-secondary: #6b2430;
+
+  /* ==========================================================================
+     SEMANTIC COLOR TOKENS (DARK THEME)
+     ========================================================================== */
+  /* Background */
+  --background: var(--base-bg-primary);
+  --background-secondary: var(--base-bg-secondary);
+  --background-tertiary: #1e221f;
+
+  /* Surface */
+  --surface: #121413;
+  --surface-hover: #1a1d1b;
+  --surface-active: #222624;
+
+  /* Text */
+  --foreground: var(--base-text-primary);
+  --foreground-secondary: #a3a096;
+  --foreground-muted: #737673;
+  --foreground-inverse: #0d0f0e;
+
+  /* Primary */
+  --primary: var(--base-accent-primary);
+  --primary-hover: #3d7558;
+  --primary-active: #4c916d;
+  --primary-foreground: #ffffff;
+
+  /* Secondary */
+  --secondary: var(--base-accent-secondary);
+  --secondary-hover: #8a2e3e;
+  --secondary-active: #a8384c;
+  --secondary-foreground: #ffffff;
+
+  /* Destructive */
+  --destructive: #ef4444;
+  --destructive-hover: #f87171;
+  --destructive-foreground: #ffffff;
+
+  /* Status */
+  --success: #34d399;
+  --warning: #fbbf24;
+  --error: #f87171;
+  --info: #60a5fa;
+
+  /* Borders */
+  --border: #2a2e2c;
+  --border-light: #1e221f;
+  --border-strong: #3d423f;
+
+  /* Forms */
+  --input-background: var(--surface);
+  --input-border: var(--border);
+  --input-placeholder: var(--foreground-muted);
+  --input-focus: var(--primary);
+
+  /* Buttons */
+  --button-primary: var(--primary);
+  --button-secondary: var(--secondary);
+  --button-outline: transparent;
+  --button-danger: var(--destructive);
+
+  /* Cards */
+  --card-background: var(--surface);
+  --card-border: var(--border-light);
+
+  /* Navbar */
+  --navbar-background: rgba(13, 15, 14, 0.8);
+  --navbar-border: var(--border-light);
+
+  /* Sidebar */
+  --sidebar-background: var(--base-bg-secondary);
+  --sidebar-border: var(--border);
+
+  /* Overlay */
+  --overlay: rgba(0, 0, 0, 0.6);
+
+  /* Scrollbar */
+  --scrollbar-thumb: #3d423f;
+  --scrollbar-track: transparent;
+
+  /* Selection */
+  --selection-background: rgba(46, 89, 67, 0.4);
+  --selection-text: #ffffff;
+
+  /* Focus Ring */
+  --focus-ring: rgba(46, 89, 67, 0.6);
+
+  /* Browser Polish */
+  color-scheme: dark;
+}
+
+:root {
+  /* ==========================================================================
+     TYPOGRAPHY SCALE
+     ========================================================================== */
+  --font-heading: "Fraunces", serif;
+  --font-body: "General Sans", sans-serif;
+
+  /* Fluid Typography (min-size, max-size based on viewport) */
+  /* h1: 48px to 72px */
+  --text-h1-size: clamp(3rem, 5vw + 1.5rem, 4.5rem);
+  --text-h1-height: 1.1;
+  --text-h1-spacing: -0.02em;
+  --text-h1-weight: 500;
+
+  /* h2: 36px to 56px */
+  --text-h2-size: clamp(2.25rem, 4vw + 1rem, 3.5rem);
+  --text-h2-height: 1.15;
+  --text-h2-spacing: -0.015em;
+  --text-h2-weight: 500;
+
+  /* h3: 28px to 40px */
+  --text-h3-size: clamp(1.75rem, 3vw + 0.75rem, 2.5rem);
+  --text-h3-height: 1.2;
+  --text-h3-spacing: -0.01em;
+  --text-h3-weight: 500;
+
+  /* h4: 24px to 32px */
+  --text-h4-size: clamp(1.5rem, 2vw + 0.75rem, 2rem);
+  --text-h4-height: 1.3;
+  --text-h4-spacing: -0.01em;
+  --text-h4-weight: 500;
+
+  /* h5: 20px to 24px */
+  --text-h5-size: clamp(1.25rem, 1.5vw + 0.75rem, 1.5rem);
+  --text-h5-height: 1.4;
+  --text-h5-spacing: 0;
+  --text-h5-weight: 500;
+
+  /* h6: 18px to 20px */
+  --text-h6-size: clamp(1.125rem, 1vw + 0.875rem, 1.25rem);
+  --text-h6-height: 1.4;
+  --text-h6-spacing: 0.01em;
+  --text-h6-weight: 600;
+
+  /* body-lg: 18px to 20px */
+  --text-body-lg-size: clamp(1.125rem, 1vw + 0.875rem, 1.25rem);
+  --text-body-lg-height: 1.6;
+  --text-body-lg-spacing: 0;
+  --text-body-lg-weight: 400;
+
+  /* body: 16px */
+  --text-body-size: 1rem;
+  --text-body-height: 1.6;
+  --text-body-spacing: 0;
+  --text-body-weight: 400;
+
+  /* body-sm: 14px */
+  --text-body-sm-size: 0.875rem;
+  --text-body-sm-height: 1.5;
+  --text-body-sm-spacing: 0.01em;
+  --text-body-sm-weight: 400;
+
+  /* caption: 12px */
+  --text-caption-size: 0.75rem;
+  --text-caption-height: 1.4;
+  --text-caption-spacing: 0.02em;
+  --text-caption-weight: 400;
+
+  /* label: 12px to 14px */
+  --text-label-size: clamp(0.75rem, 0.5vw + 0.625rem, 0.875rem);
+  --text-label-height: 1.2;
+  --text-label-spacing: 0.05em;
+  --text-label-weight: 500;
+
+  /* ==========================================================================
+     SPACING SCALE
+     ========================================================================== */
+  --space-4: 0.25rem;
+  /* 4px */
+  --space-8: 0.5rem;
+  /* 8px */
+  --space-12: 0.75rem;
+  /* 12px */
+  --space-16: 1rem;
+  /* 16px */
+  --space-20: 1.25rem;
+  /* 20px */
+  --space-24: 1.5rem;
+  /* 24px */
+  --space-32: 2rem;
+  /* 32px */
+  --space-40: 2.5rem;
+  /* 40px */
+  --space-48: 3rem;
+  /* 48px */
+  --space-56: 3.5rem;
+  /* 56px */
+  --space-64: 4rem;
+  /* 64px */
+  --space-80: 5rem;
+  /* 80px */
+  --space-96: 6rem;
+  /* 96px */
+  --space-128: 8rem;
+  /* 128px */
+
+  /* ==========================================================================
+     RADIUS SCALE
+     ========================================================================== */
+  --radius-xs: 0.25rem;
+  /* 4px */
+  --radius-sm: 0.375rem;
+  /* 6px */
+  --radius-md: 0.5rem;
+  /* 8px */
+  --radius-lg: 0.75rem;
+  /* 12px */
+  --radius-xl: 1rem;
+  /* 16px */
+  --radius-2xl: 1.5rem;
+  /* 24px */
+  --radius-full: 9999px;
+
+  /* ==========================================================================
+     SHADOW SCALE
+     ========================================================================== */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-sm:
+    0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+
+  /* ==========================================================================
+     MOTION TOKENS
+     ========================================================================== */
+  /* Durations */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+
+  /* Easing (Custom Cubic Beziers for GSAP/Lenis compatibility) */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  /* Out */
+  --ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  /* In */
+
+  /* ==========================================================================
+     BORDER TOKENS
+     ========================================================================== */
+  --border-thin: 1px;
+  --border-normal: 2px;
+  --border-thick: 4px;
+
+  /* ==========================================================================
+     OPACITY TOKENS
+     ========================================================================== */
+  --opacity-disabled: 0.4;
+  --opacity-muted: 0.6;
+  --opacity-overlay: 0.8;
+
+  /* ==========================================================================
+     Z-INDEX TOKENS
+     ========================================================================== */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal: 400;
+  --z-popover: 500;
+  --z-toast: 600;
+  --z-tooltip: 700;
+}
+
+/* ==========================================================================
+   GLOBAL THEME APPLICATION & BROWSER POLISH
+   ========================================================================== */
+
+/* Smooth font rendering */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Selection colors */
+::selection {
+  background-color: var(--selection-background);
+  color: var(--selection-text);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground-muted);
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+/* Visible focus styles */
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* High contrast friendly colors adjustment */
+@media (prefers-contrast: more) {
+  :root {
+    --border: var(--border-strong);
+    --foreground-muted: var(--foreground-secondary);
+  }
+}
+
+/* Prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
