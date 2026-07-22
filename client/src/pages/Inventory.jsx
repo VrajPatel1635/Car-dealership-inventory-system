@@ -1,10 +1,25 @@
 import React, { useEffect } from "react";
 import { useVehicles } from "../hooks/useVehicles";
-import { VehicleGrid } from "../components/vehicle";
+import { useVehicleFilters } from "../hooks/useVehicleFilters";
+import { VehicleGrid, InventoryToolbar } from "../components/vehicle";
 import { Spinner, Alert, EmptyState } from "../components/ui";
 
 const Inventory = () => {
   const { vehicles, isLoading, error, fetchVehicles } = useVehicles();
+
+  const {
+    filteredVehicles,
+    searchQuery,
+    selectedStock,
+    selectedFuelType,
+    selectedTransmission,
+    fuelTypeOptions,
+    transmissionOptions,
+    updateSearchQuery,
+    updateStockFilter,
+    updateFuelTypeFilter,
+    updateTransmissionFilter,
+  } = useVehicleFilters(vehicles);
 
   useEffect(() => {
     fetchVehicles();
@@ -35,7 +50,29 @@ const Inventory = () => {
           description="Our inventory is currently empty. Please check back later."
         />
       ) : (
-        <VehicleGrid vehicles={vehicles} />
+        <>
+          <InventoryToolbar
+            searchQuery={searchQuery}
+            onSearchChange={updateSearchQuery}
+            selectedStock={selectedStock}
+            onStockChange={updateStockFilter}
+            selectedFuelType={selectedFuelType}
+            onFuelTypeChange={updateFuelTypeFilter}
+            fuelTypeOptions={fuelTypeOptions}
+            selectedTransmission={selectedTransmission}
+            onTransmissionChange={updateTransmissionFilter}
+            transmissionOptions={transmissionOptions}
+          />
+
+          {filteredVehicles.length === 0 ? (
+            <EmptyState
+              title="No matches found"
+              description="Try adjusting your search or filters to find what you're looking for."
+            />
+          ) : (
+            <VehicleGrid vehicles={filteredVehicles} />
+          )}
+        </>
       )}
     </div>
   );
