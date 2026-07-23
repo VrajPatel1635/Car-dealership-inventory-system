@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { motion, useReducedMotion } from "framer-motion";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { authService } from "../services/auth_service";
 import { AuthForm, AuthHeader, PasswordInput } from "../components/auth";
 import { Input, Button, Alert } from "../components/ui";
-import { AlertCircle, CheckCircle2 } from "lucide-react";
 
 const registerSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -18,7 +18,7 @@ const registerSchema = z.object({
 const Register = () => {
   const navigate = useNavigate();
   const shouldReduceMotion = useReducedMotion();
-  const [serverError, setServerError] = useState("");
+  const [apiError, setApiError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,22 +35,22 @@ const Register = () => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const handleRegisterSubmit = async (registrationDetails) => {
     try {
       setIsLoading(true);
-      setServerError("");
+      setApiError("");
       setSuccessMessage("");
 
-      await authService.register(data);
+      await authService.register(registrationDetails);
 
       setSuccessMessage("Registration successful! Redirecting to login...");
       setTimeout(() => {
         navigate("/login", {
-          state: { email: data.email },
+          state: { email: registrationDetails.email },
         });
       }, 2000);
     } catch (error) {
-      setServerError(
+      setApiError(
         error.response?.data?.error || error.message || "Registration failed",
       );
     } finally {
@@ -71,9 +71,9 @@ const Register = () => {
         subtitle="Create your account to access the dealership inventory management system."
       />
 
-      {serverError && (
+      {apiError && (
         <Alert variant="error" className="mb-6" icon={<AlertCircle size={18} />}>
-          {serverError}
+          {apiError}
         </Alert>
       )}
 
@@ -83,7 +83,7 @@ const Register = () => {
         </Alert>
       )}
 
-      <AuthForm onSubmit={handleSubmit(onSubmit)}>
+      <AuthForm onSubmit={handleSubmit(handleRegisterSubmit)}>
         <Input
           id="register-name"
           label="Name"

@@ -4,13 +4,13 @@ import { vehicleService } from "../services/vehicle_service";
 export const useVehicles = () => {
   const [vehicles, setVehicles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [apiError, setApiError] = useState(null);
 
   const fetchVehicles = useCallback(async (filters = null) => {
     setIsLoading(true);
-    setError(null);
+    setApiError(null);
     try {
-      let data;
+      let fetchedVehicles;
       
       // Determine if there are any active backend-supported filters
       const hasBackendFilters = filters && (
@@ -31,20 +31,20 @@ export const useVehicles = () => {
         if (filters.priceRange?.min) params.minPrice = filters.priceRange.min;
         if (filters.priceRange?.max) params.maxPrice = filters.priceRange.max;
         
-        data = await vehicleService.searchVehicles(params);
+        fetchedVehicles = await vehicleService.searchVehicles(params);
       } else {
-        data = await vehicleService.getAllVehicles();
+        fetchedVehicles = await vehicleService.getAllVehicles();
       }
       
-      setVehicles(data);
-    } catch (err) {
-      setError(
-        err.response?.data?.error || err.message || "Failed to fetch vehicles",
+      setVehicles(fetchedVehicles);
+    } catch (errorResponse) {
+      setApiError(
+        errorResponse.response?.data?.error || errorResponse.message || "Failed to fetch vehicles",
       );
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  return { vehicles, isLoading, error, fetchVehicles };
+  return { vehicles, isLoading, error: apiError, fetchVehicles };
 };

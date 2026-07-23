@@ -10,6 +10,8 @@ import {
 } from "../components/vehicle";
 import { Spinner, Alert, EmptyState } from "../components/ui";
 
+const SEARCH_DEBOUNCE_MS = 350;
+
 const Inventory = () => {
   const { vehicles, isLoading, error, fetchVehicles } = useVehicles();
   const heroRef = useRef(null);
@@ -54,7 +56,7 @@ const Inventory = () => {
         selectedCategory,
         priceRange,
       });
-    }, 350);
+    }, SEARCH_DEBOUNCE_MS);
 
     return () => clearTimeout(handler);
   }, [
@@ -66,7 +68,7 @@ const Inventory = () => {
     priceRange,
   ]);
 
-  const handlePurchaseConfirm = async () => {
+  const handleVehiclePurchase = async () => {
     try {
       await purchaseVehicle(purchasingVehicle._id);
       setPurchasingVehicle(null);
@@ -179,7 +181,7 @@ const Inventory = () => {
       <PurchaseDialog
         isOpen={!!purchasingVehicle}
         onClose={() => !isPurchasing && setPurchasingVehicle(null)}
-        onConfirm={handlePurchaseConfirm}
+        onConfirm={handleVehiclePurchase}
         vehicle={purchasingVehicle}
         isLoading={isPurchasing}
         error={purchaseError}

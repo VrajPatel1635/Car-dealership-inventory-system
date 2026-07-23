@@ -38,10 +38,10 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (credentials) => {
-    const data = await authService.login(credentials);
-    if (data.token) {
-      authTokenService.setToken(data.token);
-      const decoded = jwtDecode(data.token);
+    const apiResponse = await authService.login(credentials);
+    if (apiResponse.token) {
+      authTokenService.setToken(apiResponse.token);
+      const decoded = jwtDecode(apiResponse.token);
       const loggedInUser = { id: decoded.id, role: decoded.role };
       setUser(loggedInUser);
       setIsAuthenticated(true);

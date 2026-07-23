@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { motion, useReducedMotion } from "framer-motion";
+import { AlertCircle } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { AuthForm, AuthHeader, PasswordInput } from "../components/auth";
 import { Input, Button, Alert } from "../components/ui";
-import { AlertCircle } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -19,7 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
-  const [serverError, setServerError] = useState("");
+  const [apiError, setApiError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -34,11 +34,11 @@ const Login = () => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const handleLoginSubmit = async (loginCredentials) => {
     try {
       setIsLoading(true);
-      setServerError("");
-      const user = await login(data);
+      setApiError("");
+      const user = await login(loginCredentials);
 
       if (user.role === "ADMIN") {
         navigate("/admin");
@@ -46,7 +46,7 @@ const Login = () => {
         navigate("/inventory");
       }
     } catch (error) {
-      setServerError(
+      setApiError(
         error.response?.data?.error || error.message || "Login failed",
       );
     } finally {
@@ -67,13 +67,13 @@ const Login = () => {
         subtitle="Sign in to continue managing your dealership inventory."
       />
 
-      {serverError && (
+      {apiError && (
         <Alert variant="error" className="mb-6" icon={<AlertCircle size={18} />}>
-          {serverError}
+          {apiError}
         </Alert>
       )}
 
-      <AuthForm onSubmit={handleSubmit(onSubmit)}>
+      <AuthForm onSubmit={handleSubmit(handleLoginSubmit)}>
         <Input
           id="login-email"
           label="Email"

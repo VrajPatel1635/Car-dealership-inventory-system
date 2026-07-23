@@ -5,35 +5,35 @@ import { useVehicles } from "./useVehicles";
 export const useAdminVehicles = () => {
   const { vehicles, isLoading, error, fetchVehicles } = useVehicles();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState(null);
+  const [apiError, setApiError] = useState(null);
 
-  const createVehicle = async (data) => {
+  const createVehicle = async (vehicleData) => {
     setIsSubmitting(true);
-    setSubmitError(null);
+    setApiError(null);
     try {
-      await vehicleService.createVehicle(data);
+      await vehicleService.createVehicle(vehicleData);
       await fetchVehicles();
-    } catch (err) {
-      setSubmitError(
-        err.response?.data?.error || err.message || "Failed to create vehicle",
+    } catch (apiError) {
+      setApiError(
+        apiError.response?.data?.error || apiError.message || "Failed to create vehicle",
       );
-      throw err;
+      throw apiError;
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const updateVehicle = async (id, data) => {
+  const updateVehicle = async (id, vehicleData) => {
     setIsSubmitting(true);
-    setSubmitError(null);
+    setApiError(null);
     try {
-      await vehicleService.updateVehicle(id, data);
+      await vehicleService.updateVehicle(id, vehicleData);
       await fetchVehicles();
-    } catch (err) {
-      setSubmitError(
-        err.response?.data?.error || err.message || "Failed to update vehicle",
+    } catch (apiError) {
+      setApiError(
+        apiError.response?.data?.error || apiError.message || "Failed to update vehicle",
       );
-      throw err;
+      throw apiError;
     } finally {
       setIsSubmitting(false);
     }
@@ -41,15 +41,15 @@ export const useAdminVehicles = () => {
 
   const deleteVehicle = async (id) => {
     setIsSubmitting(true);
-    setSubmitError(null);
+    setApiError(null);
     try {
       await vehicleService.deleteVehicle(id);
       await fetchVehicles();
-    } catch (err) {
-      setSubmitError(
-        err.response?.data?.error || err.message || "Failed to delete vehicle",
+    } catch (apiError) {
+      setApiError(
+        apiError.response?.data?.error || apiError.message || "Failed to delete vehicle",
       );
-      throw err;
+      throw apiError;
     } finally {
       setIsSubmitting(false);
     }
@@ -57,15 +57,15 @@ export const useAdminVehicles = () => {
 
   const restockVehicle = async (id, quantity) => {
     setIsSubmitting(true);
-    setSubmitError(null);
+    setApiError(null);
     try {
       await vehicleService.restockVehicle(id, quantity);
       await fetchVehicles();
-    } catch (err) {
-      setSubmitError(
-        err.response?.data?.error || err.message || "Failed to restock vehicle",
+    } catch (apiError) {
+      setApiError(
+        apiError.response?.data?.error || apiError.message || "Failed to restock vehicle",
       );
-      throw err;
+      throw apiError;
     } finally {
       setIsSubmitting(false);
     }
@@ -81,6 +81,6 @@ export const useAdminVehicles = () => {
     deleteVehicle,
     restockVehicle,
     isSubmitting,
-    submitError,
+    apiError,
   };
 };

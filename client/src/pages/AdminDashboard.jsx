@@ -58,9 +58,9 @@ const AdminDashboard = () => {
     setTimeout(() => setSuccessMessage(""), 3000);
   };
 
-  const handleCreateSubmit = async (data) => {
+  const handleVehicleCreate = async (vehicleData) => {
     try {
-      await createVehicle(data);
+      await createVehicle(vehicleData);
       setIsCreateModalOpen(false);
       showSuccess("Vehicle created successfully");
     } catch (err) {
@@ -68,9 +68,9 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleEditSubmit = async (data) => {
+  const handleVehicleUpdate = async (vehicleData) => {
     try {
-      await updateVehicle(editingVehicle._id, data);
+      await updateVehicle(editingVehicle._id, vehicleData);
       setEditingVehicle(null);
       showSuccess("Vehicle updated successfully");
     } catch (err) {
@@ -78,7 +78,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDeleteConfirm = async () => {
+  const handleVehicleDelete = async () => {
     try {
       await deleteVehicle(deletingVehicle._id);
       setDeletingVehicle(null);
@@ -88,9 +88,9 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleRestockSubmit = async (data) => {
+  const handleVehicleRestock = async (restockDetails) => {
     try {
-      await restockVehicle(restockingVehicle._id, data.quantity);
+      await restockVehicle(restockingVehicle._id, restockDetails.quantity);
       setRestockingVehicle(null);
       showSuccess("Vehicle restocked successfully");
     } catch (err) {
@@ -98,8 +98,7 @@ const AdminDashboard = () => {
     }
   };
 
-  // Metrics Calculations
-  const formatValue = (val) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(val);
+  const formatValue = (amount) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
   const totalVehicles = vehicles.length;
   const outOfStock = useMemo(() => vehicles.filter(v => v.stock === 0).length, [vehicles]);
   const totalValue = useMemo(() => vehicles.reduce((sum, v) => sum + (v.price * v.stock), 0), [vehicles]);
@@ -190,7 +189,6 @@ const AdminDashboard = () => {
         )}
       </div>
 
-      {/* Create Modal */}
       <VehicleModal
         isOpen={isCreateModalOpen}
         onClose={() => !isSubmitting && setIsCreateModalOpen(false)}
@@ -202,13 +200,12 @@ const AdminDashboard = () => {
           </Alert>
         )}
         <VehicleForm
-          onSubmit={handleCreateSubmit}
+          onSubmit={handleVehicleCreate}
           isLoading={isSubmitting}
           onCancel={() => setIsCreateModalOpen(false)}
         />
       </VehicleModal>
 
-      {/* Edit Modal */}
       <VehicleModal
         isOpen={!!editingVehicle}
         onClose={() => !isSubmitting && setEditingVehicle(null)}
@@ -222,27 +219,25 @@ const AdminDashboard = () => {
         {editingVehicle && (
           <VehicleForm
             defaultValues={editingVehicle}
-            onSubmit={handleEditSubmit}
+            onSubmit={handleVehicleUpdate}
             isLoading={isSubmitting}
             onCancel={() => setEditingVehicle(null)}
           />
         )}
       </VehicleModal>
 
-      {/* Delete Dialog */}
       <DeleteVehicleDialog
         isOpen={!!deletingVehicle}
         onClose={() => !isSubmitting && setDeletingVehicle(null)}
-        onConfirm={handleDeleteConfirm}
+        onConfirm={handleVehicleDelete}
         vehicle={deletingVehicle}
         isLoading={isSubmitting}
       />
 
-      {/* Restock Dialog */}
       <RestockDialog
         isOpen={!!restockingVehicle}
         onClose={() => !isSubmitting && setRestockingVehicle(null)}
-        onConfirm={handleRestockSubmit}
+        onConfirm={handleVehicleRestock}
         vehicle={restockingVehicle}
         isLoading={isSubmitting}
         error={submitError}
