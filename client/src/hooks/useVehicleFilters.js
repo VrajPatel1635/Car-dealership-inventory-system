@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 export const useVehicleFilters = (vehicles = []) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -6,6 +6,7 @@ export const useVehicleFilters = (vehicles = []) => {
   const [selectedFuelType, setSelectedFuelType] = useState("All");
   const [selectedTransmission, setSelectedTransmission] = useState("All");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [priceRange, setPriceRange] = useState({ min: "", max: "" });
 
   const updateSearchQuery = (query) => setSearchQuery(query);
   const updateStockFilter = (stock) => setSelectedStock(stock);
@@ -13,32 +14,35 @@ export const useVehicleFilters = (vehicles = []) => {
   const updateTransmissionFilter = (transmission) =>
     setSelectedTransmission(transmission);
   const updateCategoryFilter = (category) => setSelectedCategory(category);
+  const updatePriceRange = (range) => setPriceRange(range);
+
+  // Cache the full list of vehicles to ensure dropdown options don't shrink when filtered
+  const [initialVehicles, setInitialVehicles] = useState([]);
+  useEffect(() => {
+    if (vehicles.length > 0 && initialVehicles.length === 0) {
+      setInitialVehicles(vehicles);
+    }
+  }, [vehicles, initialVehicles]);
 
   const fuelTypeOptions = useMemo(() => {
-    const types = new Set(vehicles.map((v) => v.fuelType).filter(Boolean));
+    const types = new Set(initialVehicles.map((v) => v.fuelType).filter(Boolean));
     return ["All", ...Array.from(types).sort()];
-  }, [vehicles]);
+  }, [initialVehicles]);
 
   const transmissionOptions = useMemo(() => {
-    const types = new Set(vehicles.map((v) => v.transmission).filter(Boolean));
+    const types = new Set(initialVehicles.map((v) => v.transmission).filter(Boolean));
     return ["All", ...Array.from(types).sort()];
-  }, [vehicles]);
+  }, [initialVehicles]);
 
   const categoryOptions = useMemo(() => {
-    const types = new Set(vehicles.map((v) => v.category).filter(Boolean));
+    const types = new Set(initialVehicles.map((v) => v.category).filter(Boolean));
     return ["All", ...Array.from(types).sort()];
-  }, [vehicles]);
+  }, [initialVehicles]);
 
   const filteredVehicles = useMemo(() => {
     return vehicles.filter((vehicle) => {
-      // Search filter
-      const query = searchQuery.trim().toLowerCase();
-      const matchesSearch =
-        !query ||
-        vehicle.make?.toLowerCase().includes(query) ||
-        vehicle.model?.toLowerCase().includes(query);
-
-      // Stock filter
+      // The backend now handles query, fuel, transmission, category, and price.
+      // We only need to filter by stock locally since it's not supported by the backend search.
       let matchesStock = true;
       if (selectedStock === "In Stock") {
         matchesStock = vehicle.stock > 0;
@@ -46,31 +50,9 @@ export const useVehicleFilters = (vehicles = []) => {
         matchesStock = vehicle.stock === 0;
       }
 
-      // Fuel Type filter
-      const matchesFuelType =
-        selectedFuelType === "All" || vehicle.fuelType === selectedFuelType;
-
-      // Transmission filter
-      const matchesTransmission =
-        selectedTransmission === "All" ||
-        vehicle.transmission === selectedTransmission;
-
-      // Category filter
-      const matchesCategory =
-        selectedCategory === "All" || vehicle.category === selectedCategory;
-
-      return (
-        matchesSearch && matchesStock && matchesFuelType && matchesTransmission && matchesCategory
-      );
+      return matchesStock;
     });
-  }, [
-    vehicles,
-    searchQuery,
-    selectedStock,
-    selectedFuelType,
-    selectedTransmission,
-    selectedCategory,
-  ]);
+  }, [vehicles, selectedStock]);
 
   return {
     filteredVehicles,
@@ -79,6 +61,7 @@ export const useVehicleFilters = (vehicles = []) => {
     selectedFuelType,
     selectedTransmission,
     selectedCategory,
+    priceRange,
     fuelTypeOptions,
     transmissionOptions,
     categoryOptions,
@@ -87,5 +70,6 @@ export const useVehicleFilters = (vehicles = []) => {
     updateFuelTypeFilter,
     updateTransmissionFilter,
     updateCategoryFilter,
+    updatePriceRange,
   };
 };

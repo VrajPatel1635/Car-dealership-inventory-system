@@ -5,6 +5,10 @@ export const vehicleService = {
     const response = await api.get("/vehicles");
     return response.data;
   },
+  searchVehicles: async (params) => {
+    const response = await api.get("/vehicles/search", { params });
+    return response.data;
+  },
   createVehicle: async (vehicleData) => {
     const response = await api.post("/vehicles", vehicleData);
     return response.data;

@@ -19,6 +19,8 @@ const InventorySidebar = ({
   selectedCategory,
   onCategoryChange,
   categoryOptions,
+  priceRange,
+  onPriceRangeChange,
 }) => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
@@ -66,6 +68,8 @@ const InventorySidebar = ({
             selectedCategory={selectedCategory}
             onCategoryChange={onCategoryChange}
             categoryOptions={categoryOptions}
+            priceRange={priceRange}
+            onPriceRangeChange={onPriceRangeChange}
           />
         </div>
       </div>
@@ -135,6 +139,8 @@ const InventorySidebar = ({
                   selectedCategory={selectedCategory}
                   onCategoryChange={onCategoryChange}
                   categoryOptions={categoryOptions}
+                  priceRange={priceRange}
+                  onPriceRangeChange={onPriceRangeChange}
                 />
               </div>
               

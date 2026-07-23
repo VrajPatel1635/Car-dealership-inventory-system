@@ -1,5 +1,5 @@
 import React from "react";
-import { Select } from "../ui";
+import { Select, Input } from "../ui";
 
 const VehicleFilters = ({
   selectedStock,
@@ -13,6 +13,8 @@ const VehicleFilters = ({
   selectedCategory,
   onCategoryChange,
   categoryOptions,
+  priceRange,
+  onPriceRangeChange,
 }) => {
   return (
     <div className="flex flex-col gap-6 w-full">
@@ -75,6 +77,28 @@ const VehicleFilters = ({
           }))}
           className="w-full bg-surface border-border focus:border-primary"
         />
+      </div>
+
+      <div className="w-full">
+        <label className="block text-label-size font-mono text-muted mb-2 uppercase tracking-wider">
+          Price Range
+        </label>
+        <div className="flex flex-col gap-3">
+          <Input
+            type="number"
+            placeholder="Min Price"
+            value={priceRange?.min || ""}
+            onChange={(e) => onPriceRangeChange({ ...priceRange, min: e.target.value })}
+            className="w-full bg-surface border-border focus:border-primary"
+          />
+          <Input
+            type="number"
+            placeholder="Max Price"
+            value={priceRange?.max || ""}
+            onChange={(e) => onPriceRangeChange({ ...priceRange, max: e.target.value })}
+            className="w-full bg-surface border-border focus:border-primary"
+          />
+        </div>
       </div>
     </div>
   );

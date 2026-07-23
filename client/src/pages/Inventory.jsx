@@ -29,6 +29,7 @@ const Inventory = () => {
     selectedFuelType,
     selectedTransmission,
     selectedCategory,
+    priceRange,
     fuelTypeOptions,
     transmissionOptions,
     categoryOptions,
@@ -37,6 +38,7 @@ const Inventory = () => {
     updateFuelTypeFilter,
     updateTransmissionFilter,
     updateCategoryFilter,
+    updatePriceRange,
   } = useVehicleFilters(vehicles);
 
   const { purchaseVehicle, isPurchasing, purchaseError } = usePurchaseVehicle();
@@ -44,8 +46,25 @@ const Inventory = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    fetchVehicles();
-  }, [fetchVehicles]);
+    const handler = setTimeout(() => {
+      fetchVehicles({
+        searchQuery,
+        selectedFuelType,
+        selectedTransmission,
+        selectedCategory,
+        priceRange,
+      });
+    }, 350);
+
+    return () => clearTimeout(handler);
+  }, [
+    fetchVehicles,
+    searchQuery,
+    selectedFuelType,
+    selectedTransmission,
+    selectedCategory,
+    priceRange,
+  ]);
 
   const handlePurchaseConfirm = async () => {
     try {
@@ -53,7 +72,13 @@ const Inventory = () => {
       setPurchasingVehicle(null);
       setSuccessMessage("Vehicle purchased successfully!");
       setTimeout(() => setSuccessMessage(""), 3000);
-      fetchVehicles();
+      fetchVehicles({
+        searchQuery,
+        selectedFuelType,
+        selectedTransmission,
+        selectedCategory,
+        priceRange,
+      });
     } catch (err) {
       // Error is handled by hook and displayed in dialog
     }
@@ -120,6 +145,8 @@ const Inventory = () => {
               selectedCategory={selectedCategory}
               onCategoryChange={updateCategoryFilter}
               categoryOptions={categoryOptions}
+              priceRange={priceRange}
+              onPriceRangeChange={updatePriceRange}
             />
           </aside>
 

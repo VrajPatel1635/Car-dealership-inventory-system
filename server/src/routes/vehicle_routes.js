@@ -5,8 +5,8 @@ const requireAdmin = require('../middleware/admin_middleware');
 
 const router = express.Router();
 
-router.get('/search', vehicleController.searchVehicles);
-router.get('/', vehicleController.getVehicles);
+router.get('/search', verifyToken, vehicleController.searchVehicles);
+router.get('/', verifyToken, vehicleController.getVehicles);
 router.post('/:id/purchase', verifyToken, vehicleController.purchaseVehicle);
 router.post('/', verifyToken, vehicleController.createVehicle);
 
