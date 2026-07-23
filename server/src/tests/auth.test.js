@@ -39,6 +39,18 @@ describe('Auth Endpoints', () => {
       expect(response.status).toBe(400); // Expecting Bad Request or Conflict
       expect(response.body).toHaveProperty('error');
     });
+
+    it('should reject registration with missing fields', async () => {
+      const response = await request(app)
+        .post('/api/auth/register')
+        .send({
+          name: 'Incomplete User'
+          // missing email and password
+        });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty('error');
+    });
   });
 
   describe('POST /api/auth/login', () => {

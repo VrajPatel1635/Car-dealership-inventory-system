@@ -19,9 +19,15 @@ app.use("/api/vehicles", require("./routes/vehicle_routes"));
 // Global Error Handler for Production
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  const statusCode = err.statusCode || 500;
-  const message =
-    process.env.NODE_ENV === "production" ? "Internal Server Error" : err.message;
+  let statusCode = err.statusCode || 500;
+  let message = err.message;
+
+  if (err.name === 'ValidationError' || err.name === 'CastError') {
+    statusCode = 400;
+  } else if (process.env.NODE_ENV === "production") {
+    message = "Internal Server Error";
+  }
+
   res.status(statusCode).json({ error: message });
 });
 

@@ -4,7 +4,7 @@ const handleVehicleError = (res, error) => {
     if (error.message === 'Vehicle not found') {
         return res.status(404).json({ error: error.message });
     }
-    if (error.message === 'Out of stock') {
+    if (error.message === 'Out of stock' || error.name === 'ValidationError' || error.name === 'CastError') {
         return res.status(400).json({ error: error.message });
     }
     res.status(500).json({ error: error.message });
@@ -42,6 +42,9 @@ exports.createVehicle = async (req, res) => {
         const vehicle = await vehicleService.createVehicle(req.body);
         res.status(201).json(vehicle);
     } catch (error) {
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ error: error.message });
+        }
         res.status(500).json({ error: error.message });
     }
 };

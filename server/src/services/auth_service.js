@@ -9,6 +9,9 @@ const jwt = require('jsonwebtoken');
  * @returns {Promise<Object>} The created User document.
  */
 exports.registerUser = async (userData) => {
+    if (!userData.password) {
+        throw new Error('Password is required');
+    }
     const existingUser = await User.findOne({ email: userData.email });
     if (existingUser) {
         throw new Error('Email already exists');

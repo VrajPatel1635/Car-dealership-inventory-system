@@ -67,6 +67,19 @@ describe('Vehicle Endpoints', () => {
       expect(response.body).toHaveProperty('year', 2023);
       expect(response.body).toHaveProperty('_id');
     });
+
+    it('should reject vehicle creation with missing required fields', async () => {
+      const response = await request(app)
+        .post('/api/vehicles')
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+          make: 'Toyota'
+          // missing everything else
+        });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty('error');
+    });
   });
 
   describe('GET /api/vehicles', () => {
@@ -75,7 +88,9 @@ describe('Vehicle Endpoints', () => {
       const Vehicle = require('../models/Vehicle');
       await Vehicle.deleteMany({});
 
-      const response = await request(app).get('/api/vehicles');
+      const response = await request(app)
+        .get('/api/vehicles')
+        .set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(200);
       expect(response.body).toEqual([]);
     });
@@ -99,7 +114,9 @@ describe('Vehicle Endpoints', () => {
         .set('Authorization', `Bearer ${token}`)
         .send(vehicleData);
 
-      const response = await request(app).get('/api/vehicles');
+      const response = await request(app)
+        .get('/api/vehicles')
+        .set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(200);
       expect(response.body.length).toBeGreaterThan(0);
       expect(response.body[0]).toHaveProperty('make', 'Honda');
@@ -108,7 +125,9 @@ describe('Vehicle Endpoints', () => {
 
   describe('GET /api/vehicles/search', () => {
     it('should return an empty array when no vehicles match', async () => {
-      const response = await request(app).get('/api/vehicles/search?make=NonExistentMake');
+      const response = await request(app)
+        .get('/api/vehicles/search?make=NonExistentMake')
+        .set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(200);
       expect(response.body).toEqual([]);
     });
@@ -129,13 +148,17 @@ describe('Vehicle Endpoints', () => {
       await request(app).post('/api/vehicles').set('Authorization', `Bearer ${token}`).send(vehicle2);
 
       // Filter by make
-      let response = await request(app).get('/api/vehicles/search?make=Honda');
+      let response = await request(app)
+        .get('/api/vehicles/search?make=Honda')
+        .set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(200);
       expect(response.body.length).toBe(1);
       expect(response.body[0].make).toBe('Honda');
 
       // Filter by minPrice and maxPrice
-      response = await request(app).get('/api/vehicles/search?minPrice=24000&maxPrice=30000');
+      response = await request(app)
+        .get('/api/vehicles/search?minPrice=24000&maxPrice=30000')
+        .set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(200);
       expect(response.body.length).toBe(1);
       expect(response.body[0].price).toBe(25000);
@@ -161,18 +184,24 @@ describe('Vehicle Endpoints', () => {
       await request(app).post('/api/vehicles').set('Authorization', `Bearer ${token}`).send(vehicle2);
       await request(app).post('/api/vehicles').set('Authorization', `Bearer ${token}`).send(vehicle3);
 
-      let response = await request(app).get('/api/vehicles/search?query=blue honda city');
+      let response = await request(app)
+        .get('/api/vehicles/search?query=blue honda city')
+        .set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(200);
       expect(response.body.length).toBe(1);
       expect(response.body[0].model).toBe('City');
 
-      response = await request(app).get('/api/vehicles/search?query=black fortuner');
+      response = await request(app)
+        .get('/api/vehicles/search?query=black fortuner')
+        .set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(200);
       expect(response.body.length).toBe(1);
       expect(response.body[0].model).toBe('Fortuner');
 
       // Combined with normal filters
-      response = await request(app).get('/api/vehicles/search?query=honda&maxPrice=21000');
+      response = await request(app)
+        .get('/api/vehicles/search?query=honda&maxPrice=21000')
+        .set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(200);
       expect(response.body.length).toBe(1);
       expect(response.body[0].model).toBe('Civic');
@@ -215,6 +244,15 @@ describe('Vehicle Endpoints', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(404);
+      expect(response.body).toHaveProperty('error');
+    });
+
+    it('should reject operations with invalid vehicle IDs', async () => {
+      const response = await request(app)
+        .post(`/api/vehicles/invalid-id-format/purchase`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(400); // CastError from Mongoose
       expect(response.body).toHaveProperty('error');
     });
   });

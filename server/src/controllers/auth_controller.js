@@ -5,7 +5,7 @@ exports.register = async (req, res) => {
         await authService.registerUser(req.body);
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-        if (error.message === 'Email already exists') {
+        if (error.message === 'Email already exists' || error.message === 'Password is required' || error.name === 'ValidationError') {
             return res.status(400).json({ error: error.message });
         }
         res.status(500).json({ error: error.message });
