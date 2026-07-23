@@ -1,81 +1,85 @@
 import React from "react";
-import { Edit, Trash2, PackagePlus } from "lucide-react";
-import { Button } from "../ui";
+import { Edit2, Trash2, PackagePlus } from "lucide-react";
 
 const VehicleTable = ({ vehicles, onEdit, onDelete, onRestock }) => {
   const formatPrice = (amount) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("en-IN", {
       style: "currency",
-      currency: "USD",
+      currency: "INR",
       maximumFractionDigits: 0,
     }).format(amount);
   };
 
   return (
-    <div className="w-full overflow-x-auto rounded-lg border border-border bg-surface">
-      <table className="w-full text-left text-body-sm-size">
-        <thead className="bg-background border-b border-border text-muted uppercase tracking-wider text-xs font-semibold">
+    <div className="w-full overflow-x-auto">
+      <table className="w-full text-left whitespace-nowrap">
+        <thead className="sticky top-0 bg-background/80 backdrop-blur-md z-10 border-b border-border/50">
           <tr>
-            <th className="px-6 py-4">Make & Model</th>
-            <th className="px-6 py-4">Year</th>
-            <th className="px-6 py-4">Price</th>
-            <th className="px-6 py-4">Stock</th>
-            <th className="px-6 py-4 text-right">Actions</th>
+            <th className="px-8 py-5 text-[10px] font-mono uppercase tracking-widest text-muted font-semibold">Make & Model</th>
+            <th className="px-8 py-5 text-[10px] font-mono uppercase tracking-widest text-muted font-semibold">Year</th>
+            <th className="px-8 py-5 text-[10px] font-mono uppercase tracking-widest text-muted font-semibold">Price</th>
+            <th className="px-8 py-5 text-[10px] font-mono uppercase tracking-widest text-muted font-semibold">Stock</th>
+            <th className="px-8 py-5 text-[10px] font-mono uppercase tracking-widest text-muted font-semibold text-right">Actions</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-border">
+        <tbody className="divide-y divide-border/50">
           {vehicles.map((vehicle) => (
             <tr
               key={vehicle._id}
-              className="hover:bg-background/50 transition-colors"
+              className="group hover:bg-surface-hover transition-colors duration-300"
             >
-              <td className="px-6 py-4 font-medium text-foreground">
-                {vehicle.make} {vehicle.model}
+              <td className="px-8 py-6">
+                <div className="flex flex-col">
+                  <span className="font-heading font-semibold text-foreground text-base tracking-tight">
+                    {vehicle.make}
+                  </span>
+                  <span className="text-body-sm-size text-muted font-medium">
+                    {vehicle.model}
+                  </span>
+                </div>
               </td>
-              <td className="px-6 py-4 text-muted">{vehicle.year}</td>
-              <td className="px-6 py-4 text-foreground font-medium">
-                {formatPrice(vehicle.price)}
+              <td className="px-8 py-6">
+                <span className="font-mono text-muted text-sm">{vehicle.year}</span>
               </td>
-              <td className="px-6 py-4">
-                <span
-                  className={
-                    vehicle.stock === 0
-                      ? "text-error font-medium"
-                      : "text-foreground"
-                  }
-                >
-                  {vehicle.stock}
+              <td className="px-8 py-6">
+                <span className="font-mono text-primary font-bold text-base">
+                  {formatPrice(vehicle.price)}
                 </span>
               </td>
-              <td className="px-6 py-4 text-right">
-                <div className="flex justify-end gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0 text-muted hover:text-primary"
+              <td className="px-8 py-6">
+                {vehicle.stock === 0 ? (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] tracking-widest font-mono font-bold bg-error/10 text-error">
+                    OUT OF STOCK
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] tracking-widest font-mono font-bold bg-primary/10 text-primary">
+                    {vehicle.stock} UNITS
+                  </span>
+                )}
+              </td>
+              <td className="px-8 py-6 text-right">
+                <div className="inline-flex justify-end gap-2 opacity-100 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 transition-opacity duration-300 min-w-max">
+                  <button
                     onClick={() => onRestock(vehicle)}
-                    aria-label="Restock vehicle"
+                    className="p-2.5 rounded-xl text-blue-500 hover:bg-blue-500/10 transition-colors cursor-pointer"
+                    title="Restock"
                   >
-                    <PackagePlus size={16} />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0 text-muted hover:text-primary"
+                    <PackagePlus size={18} strokeWidth={2} />
+                  </button>
+                  <button
                     onClick={() => onEdit(vehicle)}
-                    aria-label="Edit vehicle"
+                    className="p-2.5 rounded-xl text-primary hover:bg-primary/10 transition-colors cursor-pointer"
+                    title="Edit"
                   >
-                    <Edit size={16} />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0 text-muted hover:text-error"
+                    <Edit2 size={18} strokeWidth={2} />
+                  </button>
+                  <button
                     onClick={() => onDelete(vehicle)}
-                    aria-label="Delete vehicle"
+                    className="p-2.5 rounded-xl text-error hover:bg-error/10 transition-colors cursor-pointer"
+                    title="Delete"
                   >
-                    <Trash2 size={16} />
-                  </Button>
+                    <Trash2 size={18} strokeWidth={2} />
+                  </button>
                 </div>
               </td>
             </tr>

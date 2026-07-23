@@ -14,11 +14,14 @@ const PurchaseDialog = ({
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      if (window.lenis) window.lenis.stop();
     } else {
       document.body.style.overflow = "unset";
+      if (window.lenis) window.lenis.start();
     }
     return () => {
       document.body.style.overflow = "unset";
+      if (window.lenis) window.lenis.start();
     };
   }, [isOpen]);
 
@@ -33,7 +36,10 @@ const PurchaseDialog = ({
   return (
     <AnimatePresence>
       {isOpen && vehicle && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overscroll-none"
+          data-lenis-prevent="true"
+        >
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

@@ -79,18 +79,31 @@ const VehicleForm = ({ defaultValues, onSubmit, isLoading, onCancel }) => {
           helperText={errors.mileage?.message}
           {...register("mileage")}
         />
-        <Input
+        <Select
           label="Fuel Type"
-          placeholder="e.g. Gasoline, Electric"
           error={!!errors.fuelType}
           helperText={errors.fuelType?.message}
+          options={[
+            { value: "", label: "Select fuel type" },
+            { value: "Gasoline", label: "Gasoline" },
+            { value: "Diesel", label: "Diesel" },
+            { value: "Electric", label: "Electric" },
+            { value: "Hybrid", label: "Hybrid" },
+            { value: "Plug-in Hybrid", label: "Plug-in Hybrid" },
+          ]}
           {...register("fuelType")}
         />
-        <Input
+        <Select
           label="Transmission"
-          placeholder="e.g. Automatic, Manual"
           error={!!errors.transmission}
           helperText={errors.transmission?.message}
+          options={[
+            { value: "", label: "Select transmission" },
+            { value: "Automatic", label: "Automatic" },
+            { value: "Manual", label: "Manual" },
+            { value: "CVT", label: "CVT" },
+            { value: "Dual-Clutch", label: "Dual-Clutch" },
+          ]}
           {...register("transmission")}
         />
         <Input
@@ -127,16 +140,22 @@ const VehicleForm = ({ defaultValues, onSubmit, isLoading, onCancel }) => {
         />
       </div>
 
-      <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-border">
+      <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-border">
         <Button
           type="button"
           variant="outline"
           onClick={onCancel}
           disabled={isLoading}
+          className="rounded-xl px-8 py-5 font-mono uppercase tracking-widest text-[10px]"
         >
           Cancel
         </Button>
-        <Button type="submit" variant="primary" loading={isLoading}>
+        <Button 
+          type="submit" 
+          variant="primary" 
+          loading={isLoading}
+          className="rounded-xl px-8 py-5 font-mono uppercase tracking-widest text-[10px]"
+        >
           Save Vehicle
         </Button>
       </div>

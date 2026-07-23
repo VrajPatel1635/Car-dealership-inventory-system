@@ -25,11 +25,14 @@ const InventorySidebar = ({
   useEffect(() => {
     if (isMobileFilterOpen) {
       document.body.style.overflow = "hidden";
+      if (window.lenis) window.lenis.stop();
     } else {
       document.body.style.overflow = "unset";
+      if (window.lenis) window.lenis.start();
     }
     return () => {
       document.body.style.overflow = "unset";
+      if (window.lenis) window.lenis.start();
     };
   }, [isMobileFilterOpen]);
 
@@ -88,7 +91,10 @@ const InventorySidebar = ({
       {/* Mobile Filter Dialog */}
       <AnimatePresence>
         {isMobileFilterOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 lg:hidden">
+          <div 
+            className="fixed inset-0 z-[100] flex items-end justify-center sm:items-center p-4 overscroll-none"
+            data-lenis-prevent="true"
+          >
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

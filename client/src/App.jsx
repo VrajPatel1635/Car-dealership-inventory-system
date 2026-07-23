@@ -16,6 +16,8 @@ function App() {
       touchMultiplier: 2,
       infinite: false,
     });
+    
+    window.lenis = lenis;
 
     function raf(time) {
       lenis.raf(time);
