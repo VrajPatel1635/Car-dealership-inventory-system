@@ -105,11 +105,11 @@
   /* ==========================================================================
      BASE COLOR PALETTE (DARK THEME)
      ========================================================================== */
-  --base-bg-primary: #0d0f0e;
-  --base-bg-secondary: #161917;
-  --base-text-primary: #eceae4;
-  --base-accent-primary: #2e5943;
-  --base-accent-secondary: #6b2430;
+  --base-bg-primary: #09090b; /* Deep Onyx */
+  --base-bg-secondary: #18181b; /* Charcoal */
+  --base-text-primary: #fafafa; /* Stark White */
+  --base-accent-primary: #c8aa6e; /* Muted Gold for high-contrast elegance */
+  --base-accent-secondary: #3f3f46; /* Subtle metallic grey */
 
   /* ==========================================================================
      SEMANTIC COLOR TOKENS (DARK THEME)
@@ -132,14 +132,14 @@
 
   /* Primary */
   --primary: var(--base-accent-primary);
-  --primary-hover: #3d7558;
-  --primary-active: #4c916d;
-  --primary-foreground: #ffffff;
+  --primary-hover: #dfc58f;
+  --primary-active: #b39556;
+  --primary-foreground: #09090b; /* Dark text on gold button */
 
   /* Secondary */
   --secondary: var(--base-accent-secondary);
-  --secondary-hover: #8a2e3e;
-  --secondary-active: #a8384c;
+  --secondary-hover: #52525b;
+  --secondary-active: #27272a;
   --secondary-foreground: #ffffff;
 
   /* Destructive */
@@ -206,6 +206,7 @@
      ========================================================================== */
   --font-heading: "Fraunces", serif;
   --font-body: "General Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 
   /* Fluid Typography (min-size, max-size based on viewport) */
   /* h1: 48px to 72px */
@@ -343,13 +344,14 @@
   --duration-fast: 150ms;
   --duration-normal: 300ms;
   --duration-slow: 500ms;
+  --duration-dramatic: 800ms;
 
   /* Easing (Custom Cubic Beziers for GSAP/Lenis compatibility) */
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
-  /* Out */
-  --ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
-  /* In */
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1); /* Out */
+  --ease-accelerate: cubic-bezier(0.4, 0, 1, 1); /* In */
+  --ease-dramatic: cubic-bezier(0.77, 0, 0.175, 1); /* Slow reveal */
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1); /* Snappy settle */
 
   /* ==========================================================================
      BORDER TOKENS
