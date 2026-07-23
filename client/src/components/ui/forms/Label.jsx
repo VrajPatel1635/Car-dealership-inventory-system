@@ -6,12 +6,15 @@ const Label = React.forwardRef(
     return (
       <label
         ref={ref}
-        className={cn("text-label-size font-medium text-foreground", className)}
+        className={cn(
+          "text-sm font-medium text-foreground/90 select-none cursor-pointer tracking-tight",
+          className
+        )}
         {...props}
       >
         {children}
         {required && (
-          <span className="text-error ml-1" aria-hidden="true">
+          <span className="text-error ml-1 font-semibold" aria-hidden="true">
             *
           </span>
         )}

@@ -2,7 +2,7 @@ import React from "react";
 
 const AuthForm = ({ onSubmit, children }) => {
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4 w-full">
+    <form onSubmit={onSubmit} className="flex flex-col gap-6 w-full">
       {children}
     </form>
   );

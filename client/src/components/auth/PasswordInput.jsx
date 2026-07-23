@@ -1,38 +1,32 @@
 import React, { useState, forwardRef } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { Input, Button } from "../ui";
-import { cn } from "../../utils/cn";
+import Input from "../ui/forms/Input";
 
 const PasswordInput = forwardRef(({ className, ...props }, ref) => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
+  const suffix = (
+    <button
+      type="button"
+      className="p-1 rounded-md text-foreground-muted hover:text-foreground hover:bg-surface-hover transition-colors duration-[var(--duration-fast)] focus:outline-none focus:ring-1 focus:ring-primary/30 cursor-pointer"
+      onClick={() => setShowPassword((prev) => !prev)}
+      aria-label={showPassword ? "Hide password" : "Show password"}
+      tabIndex={0}
+    >
+      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+    </button>
+  );
 
   return (
-    <div className="relative w-full">
-      <Input
-        type={showPassword ? "text" : "password"}
-        className={cn("pr-10", className)}
-        ref={ref}
-        {...props}
-      />
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0 text-muted hover:text-foreground"
-        onClick={togglePasswordVisibility}
-        aria-label={showPassword ? "Hide password" : "Show password"}
-        tabIndex={-1}
-      >
-        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-      </Button>
-    </div>
+    <Input
+      type={showPassword ? "text" : "password"}
+      ref={ref}
+      suffix={suffix}
+      className={className}
+      {...props}
+    />
   );
 });
 
 PasswordInput.displayName = "PasswordInput";
-
 export default PasswordInput;

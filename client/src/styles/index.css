@@ -13,16 +13,52 @@
   --font-mono: var(--font-mono);
 
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-hover: var(--primary-hover);
-  --color-secondary: var(--secondary);
-  --color-muted: var(--foreground-muted);
-  --color-border: var(--border);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-tertiary: var(--background-tertiary);
+
   --color-surface: var(--surface);
   --color-surface-hover: var(--surface-hover);
-  --color-error: var(--error);
+  --color-surface-active: var(--surface-active);
+
+  --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-inverse: var(--foreground-inverse);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-active: var(--secondary-active);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-hover: var(--destructive-hover);
+  --color-destructive-foreground: var(--destructive-foreground);
+
   --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-info: var(--info);
+
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-border-strong: var(--border-strong);
+
+  --text-h1-size: var(--text-h1-size);
+  --text-h2-size: var(--text-h2-size);
+  --text-h3-size: var(--text-h3-size);
+  --text-h4-size: var(--text-h4-size);
+  --text-h5-size: var(--text-h5-size);
+  --text-h6-size: var(--text-h6-size);
+  --text-body-lg-size: var(--text-body-lg-size);
+  --text-body-size: var(--text-body-size);
+  --text-body-sm-size: var(--text-body-sm-size);
+  --text-caption-size: var(--text-caption-size);
+  --text-label-size: var(--text-label-size);
 }
 
 /* --------------------------------------------------
@@ -32,8 +68,6 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html {
@@ -86,17 +120,10 @@ textarea,
 select {
   font: inherit;
   color: inherit;
-  background: transparent;
-  border: none;
 }
 
 button {
   cursor: pointer;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
 }
 
 ul,
